@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email API Benchmark</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface: #fcfcfb;
+    --panel: #ffffff;
+    --border: #e6e5e0;
+    --grid: #efeee9;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #7a7974;
+    --s1: #2a78d6; /* Node */
+    --s2: #eb6834; /* Bun  */
+    --s3: #1baf7a; /* Go   */
+    --s4: #eda100; /* Rust */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface: #1a1a19; --panel: #222221; --border: #34342f; --grid: #2c2c29;
+      --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface: #1a1a19; --panel: #222221; --border: #34342f; --grid: #2c2c29;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface); color: var(--text-primary);
+    font: 14px/1.45 ui-sans-serif, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--text-secondary); margin: 0 0 16px; max-width: 760px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 0 0 16px; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .seg button { border: 0; background: transparent; color: var(--text-secondary); padding: 6px 12px; font: inherit; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--panel); color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--text-primary); }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; color: var(--text-secondary); font-size: 13px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .metric-title { grid-column: 1 / -1; margin: 18px 0 0; font-size: 15px; }
+  .metric-title small { color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px; min-width: 0; }
+  .panel h3 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+  .bar-row { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 8px; height: 26px; }
+  .bar-row .name { color: var(--text-secondary); font-size: 12px; white-space: nowrap; }
+  .track { position: relative; height: 16px; }
+  .bar { position: absolute; left: 0; top: 0; height: 16px; border-radius: 0 4px 4px 0; min-width: 2px; }
+  .val { position: absolute; top: 0; line-height: 16px; font-size: 12px; color: var(--text-primary);
+    font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 6px; }
+  .val.inside { color: #fff; padding: 0 6px 0 0; transform: translateX(-100%); }
+  .hit { position: absolute; inset: -5px 0; cursor: default; }
+  #tip { position: fixed; pointer-events: none; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 10px; font-size: 12px; color: var(--text-primary); box-shadow: 0 4px 16px rgba(0,0,0,.12); display: none; z-index: 10; }
+  #tip b { display: block; margin-bottom: 2px; }
+  #tip div { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  details { margin-top: 24px; }
+  summary { cursor: pointer; color: var(--text-secondary); }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; margin-top: 8px; font-size: 12px; font-variant-numeric: tabular-nums; width: 100%; }
+  th, td { text-align: right; padding: 4px 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
+  th { color: var(--text-secondary); font-weight: 600; }
+  .notes { color: var(--text-secondary); font-size: 13px; margin-top: 20px; max-width: 760px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Email API benchmark: Node vs Bun vs Go vs Rust</h1>
+  <p class="sub">The same Resend-style <code>POST /emails</code> service in TypeScript (on Node and on Bun), Go and Rust, each in a 1 CPU / 2 GB container.
+    Byte-identical behaviour verified by a parity harness (67/68 fixtures). Medians of 3 runs. Latency, CPU and memory are measured with all servers at the same fixed load.</p>
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Dependencies">
+      <button data-mode="real" aria-pressed="true">Real Redis + Postgres + S3</button>
+      <button data-mode="memory" aria-pressed="false">In-memory (pure language cost)</button>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+  <div class="grid" id="charts"></div>
+  <details>
+    <summary>Table view (all runs)</summary>
+    <div class="table-wrap"><table id="table"></table></div>
+  </details>
+  <p class="notes">Payloads: <b>small</b> = 2 KB transactional email (HTML→text), <b>large</b> = 730 KB newsletter with a 150 KB
+    serialized Node Buffer and a 100 KB base64 attachment, <b>batch</b> = 50 small emails. Medians of 3 interleaved runs on an
+    Apple M4 under OrbStack; hover a bar for the min–max across runs.</p>
+</main>
+<div id="tip" role="tooltip"></div>
+<script>
+const DATA = [{"mode":"real","scenario":"small","lang":"ts","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[1451.1922443811243,1610.7029603505528],"p50ms":[33.155246999999996,36.495636999999995],"p95ms":[76.904453,84.523562],"p99ms":[98.052625,107.97734200000001],"cpuMsPerReq":[0.621088353662312,0.6860372000275047],"peakRssMb":[178.48828125,183.81640625]},"rps":1569.0392787934845,"p50ms":34.323537,"p95ms":81.93431700000001,"p99ms":107.66630400000001,"cpuMsPerReq":0.6371419666709071,"peakRssMb":178.5390625},{"mode":"real","scenario":"small","lang":"ts-bun","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[1315.9547734925354,2431.467161791609],"p50ms":[22.53262,37.860807],"p95ms":[52.91051,112.581802],"p99ms":[74.625428,172.679996],"cpuMsPerReq":[0.39632587820091925,0.7489384615384616],"peakRssMb":[140.5859375,149.00390625]},"rps":2330.3118782742263,"p50ms":22.546373000000003,"p95ms":58.982508,"p99ms":81.17775400000001,"cpuMsPerReq":0.4079059898045879,"peakRssMb":142.19140625},{"mode":"real","scenario":"small","lang":"go","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[2526.298260570698,3001.665911003829],"p50ms":[18.023362000000002,20.130007],"p95ms":[33.152788,54.423087],"p99ms":[84.878348,104.938407],"cpuMsPerReq":[0.28971783956365577,0.3469209383145091],"peakRssMb":[32.703125,34.6171875]},"rps":2781.5332155332294,"p50ms":19.416636,"p95ms":41.226178000000004,"p99ms":97.486925,"cpuMsPerReq":0.3108741439277134,"peakRssMb":33.41015625},{"mode":"real","scenario":"small","lang":"ts","phase":"fixed","targetRps":785,"runs":3,"failedRequests":0,"spread":{"rps":[784.3695839992822,784.7083670589243],"p50ms":[3.34191,3.50335],"p95ms":[16.883017,25.674458],"p99ms":[60.663242,87.850259],"cpuMsPerReq":[0.8332916560509555,0.8718349044585988],"peakRssMb":[177.08984375,194.30859375]},"rps":784.6431419451139,"p50ms":3.406245,"p95ms":20.742308,"p99ms":76.73709099999999,"cpuMsPerReq":0.858321931333206,"peakRssMb":185.3359375},{"mode":"real","scenario":"small","lang":"ts-bun","phase":"fixed","targetRps":785,"runs":3,"failedRequests":0,"spread":{"rps":[784.3294932263766,784.6824821962258],"p50ms":[2.9615560000000003,3.227449],"p95ms":[7.732578999999999,15.149764],"p99ms":[30.906149,59.667117],"cpuMsPerReq":[0.6420958598726115,0.7016877508121536],"peakRssMb":[154.91796875,164.546875]},"rps":784.5719465149098,"p50ms":2.98299,"p95ms":9.424144,"p99ms":40.167728,"cpuMsPerReq":0.6421487261146497,"peakRssMb":164.13671875},{"mode":"real","scenario":"small","lang":"go","phase":"fixed","targetRps":785,"runs":3,"failedRequests":0,"spread":{"rps":[784.426045603658,784.8204990732161],"p50ms":[2.313803,2.562403],"p95ms":[6.43782,7.074634],"p99ms":[13.35177,58.584658999999995],"cpuMsPerReq":[0.3622312738853503,0.3655720746544366],"peakRssMb":[49.63671875,51.5546875]},"rps":784.6264404501786,"p50ms":2.512696,"p95ms":6.565573,"p99ms":20.034073,"cpuMsPerReq":0.36318847133757964,"peakRssMb":51.26953125},{"mode":"real","scenario":"large","lang":"ts","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[106.9162401510637,112.20876550293788],"p50ms":[546.109188,574.514441],"p95ms":[703.885852,763.206733],"p99ms":[2203.218164,2346.163576],"cpuMsPerReq":[8.698607142857144,9.04388134057971],"peakRssMb":[448.11328125,474.8203125]},"rps":112.15542967935895,"p50ms":549.811885,"p95ms":732.007866,"p99ms":2248.434339,"cpuMsPerReq":8.719828247602441,"peakRssMb":460.078125},{"mode":"real","scenario":"large","lang":"ts-bun","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[136.89829668460308,141.64582814922628],"p50ms":[442.41573,449.961456],"p95ms":[515.457476,599.602934],"p99ms":[606.096135,735.25165],"cpuMsPerReq":[6.261873103448276,6.508933189655172],"peakRssMb":[716.05078125,889.80078125]},"rps":137.44199419783365,"p50ms":444.37280699999997,"p95ms":570.203389,"p99ms":691.708075,"cpuMsPerReq":6.45390580736544,"peakRssMb":761.68359375},{"mode":"real","scenario":"large","lang":"go","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[133.64896651499438,137.8103709843468],"p50ms":[460.672271,468.44699899999995],"p95ms":[565.916057,619.380665],"p99ms":[654.265761,709.446948],"cpuMsPerReq":[6.459896453900709,6.568123628383321],"peakRssMb":[69.12890625,74.29296875]},"rps":135.71221046428073,"p50ms":460.968392,"p95ms":579.596274,"p99ms":696.030327,"cpuMsPerReq":6.4617720797720795,"peakRssMb":73.76953125},{"mode":"real","scenario":"large","lang":"ts","phase":"fixed","targetRps":56,"runs":3,"failedRequests":0,"spread":{"rps":[55.95686472753651,55.9861069299945],"p50ms":[12.368916,12.677579],"p95ms":[16.946983999999997,19.418682999999998],"p99ms":[27.686656,82.409828],"cpuMsPerReq":[10.023314285714285,11.427415178571428],"peakRssMb":[195.546875,233.12890625]},"rps":55.97988398136457,"p50ms":12.546662,"p95ms":18.806597,"p99ms":48.306947,"cpuMsPerReq":10.841186607142857,"peakRssMb":206.58203125},{"mode":"real","scenario":"large","lang":"ts-bun","phase":"fixed","targetRps":56,"runs":3,"failedRequests":0,"spread":{"rps":[55.96103748580115,55.9799382288232],"p50ms":[12.437785,13.439075],"p95ms":[27.522562,37.094447],"p99ms":[32.605878,95.795565],"cpuMsPerReq":[7.763949107142857,8.510951785714285],"peakRssMb":[196.25390625,238.99609375]},"rps":55.97840868274272,"p50ms":13.022831,"p95ms":29.968273,"p99ms":40.126863,"cpuMsPerReq":8.252442857142858,"peakRssMb":206.72265625},{"mode":"real","scenario":"large","lang":"go","phase":"fixed","targetRps":56,"runs":3,"failedRequests":0,"spread":{"rps":[55.93148788170111,55.98343756311911],"p50ms":[12.873166,12.952785],"p95ms":[16.271939999999997,17.326273999999998],"p99ms":[25.229615,33.650552],"cpuMsPerReq":[6.990352678571428,7.0542026785714285],"peakRssMb":[37.47265625,38.0859375]},"rps":55.980871764371784,"p50ms":12.911789,"p95ms":16.9028,"p99ms":26.09692,"cpuMsPerReq":6.996525,"peakRssMb":37.55078125},{"mode":"real","scenario":"batch","lang":"ts","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[36.15475944686637,37.16285302524966],"p50ms":[1599.905849,1621.97119],"p95ms":[2953.805259,4041.253715],"p99ms":[6030.6781679999995,7020.147057],"cpuMsPerReq":[26.5115125,27.55665091863517],"peakRssMb":[313.77734375,349.59765625]},"rps":36.49819106394111,"p50ms":1610.290146,"p95ms":3173.8915300000003,"p99ms":6155.057532,"cpuMsPerReq":27.3420205655527,"peakRssMb":336.7421875},{"mode":"real","scenario":"batch","lang":"ts-bun","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[54.537982043920906,55.7105501406622],"p50ms":[1079.293952,1114.72437],"p95ms":[1423.847385,1505.5419109999998],"p99ms":[1782.8063140000002,1874.7425369999999],"cpuMsPerReq":[17.29852805280528,17.715972835314094],"peakRssMb":[382.69140625,405.5]},"rps":55.1116343712105,"p50ms":1108.815573,"p95ms":1494.388512,"p99ms":1858.521232,"cpuMsPerReq":17.691947278911563,"peakRssMb":393.5546875},{"mode":"real","scenario":"batch","lang":"go","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[69.03612112860843,75.81410099282812],"p50ms":[803.325846,876.452952],"p95ms":[1213.823395,1389.0897340000001],"p99ms":[1452.042853,1629.415104],"cpuMsPerReq":[12.474352201257862,13.458046218487395],"peakRssMb":[268.734375,275.23828125]},"rps":74.58214222098378,"p50ms":830.688997,"p95ms":1272.01987,"p99ms":1531.277658,"cpuMsPerReq":12.612098318240621,"peakRssMb":272.1953125},{"mode":"real","scenario":"batch","lang":"ts","phase":"fixed","targetRps":18,"runs":3,"failedRequests":0,"spread":{"rps":[17.99276038165347,17.994788970938195],"p50ms":[21.874287,22.120995],"p95ms":[30.308609,31.667156000000002],"p99ms":[39.759350999999995,44.371156],"cpuMsPerReq":[23.69271666666667,24.129694444444446],"peakRssMb":[163.84375,171.66796875]},"rps":17.994258446897252,"p50ms":21.972078,"p95ms":31.196492,"p99ms":42.444323,"cpuMsPerReq":23.91592222222222,"peakRssMb":166.40625},{"mode":"real","scenario":"batch","lang":"ts-bun","phase":"fixed","targetRps":18,"runs":3,"failedRequests":0,"spread":{"rps":[17.992579386156685,17.9960576711312],"p50ms":[17.307534999999998,18.356566],"p95ms":[26.014928,27.934243000000002],"p99ms":[38.510555000000004,40.86049],"cpuMsPerReq":[15.615394444444446,16.86057222222222],"peakRssMb":[134.29296875,140.19921875]},"rps":17.993162410255557,"p50ms":18.007078,"p95ms":26.917639,"p99ms":39.772056,"cpuMsPerReq":16.814905555555555,"peakRssMb":136.40625},{"mode":"real","scenario":"batch","lang":"go","phase":"fixed","targetRps":18,"runs":3,"failedRequests":0,"spread":{"rps":[17.984883412338327,17.995066656974757],"p50ms":[16.645995,17.314188],"p95ms":[25.394596,28.119452],"p99ms":[30.151958,47.701989],"cpuMsPerReq":[11.961544444444444,12.264061111111111],"peakRssMb":[33.9296875,35.3984375]},"rps":17.986161199364187,"p50ms":17.269204,"p95ms":26.45272,"p99ms":39.111974000000004,"cpuMsPerReq":12.230072222222223,"peakRssMb":34.375},{"mode":"memory","scenario":"small","lang":"ts","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[14848.930992445463,15180.120049234389],"p50ms":[4.013806,4.13128],"p95ms":[4.830607,5.231403],"p99ms":[8.094887,8.355976],"cpuMsPerReq":[0.06375669271124744,0.06547000257318739],"peakRssMb":[144.46484375,147.98828125]},"rps":15147.46108837163,"p50ms":4.023944,"p95ms":5.2010060000000005,"p99ms":8.353734,"cpuMsPerReq":0.06543347980270374,"peakRssMb":145.515625},{"mode":"memory","scenario":"small","lang":"ts-bun","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[19473.654495643,20462.606195399345],"p50ms":[2.958521,3.125655],"p95ms":[4.107388,4.452485],"p99ms":[6.0862750000000005,6.667727],"cpuMsPerReq":[0.04741605889302208,0.05012589612402305],"peakRssMb":[92.9453125,94.29296875]},"rps":20156.129000523815,"p50ms":3.060741,"p95ms":4.200971,"p99ms":6.311456,"cpuMsPerReq":0.04754384155863471,"peakRssMb":93.1796875},{"mode":"memory","scenario":"small","lang":"go","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[21389.621071990616,22055.988126074782],"p50ms":[1.9382780000000002,2.521366],"p95ms":[8.330469,11.269962999999999],"p99ms":[17.50242,18.06802],"cpuMsPerReq":[0.041897099466287294,0.044473477470913264],"peakRssMb":[16.5390625,16.69921875]},"rps":21675.041131312315,"p50ms":2.3236160000000003,"p95ms":9.986632,"p99ms":17.509603,"cpuMsPerReq":0.04330682519931794,"peakRssMb":16.6875},{"mode":"memory","scenario":"small","lang":"ts","phase":"fixed","targetRps":7574,"runs":3,"failedRequests":0,"spread":{"rps":[7570.306701882432,7571.800323122125],"p50ms":[1.076465,1.69158],"p95ms":[3.081697,3.543413],"p99ms":[3.811982,6.900863],"cpuMsPerReq":[0.06931723177269007,0.0701801065508295],"peakRssMb":[152.3359375,155.18359375]},"rps":7571.002987922817,"p50ms":1.144454,"p95ms":3.3814800000000003,"p99ms":4.029111,"cpuMsPerReq":0.06953877082136703,"peakRssMb":153.87109375},{"mode":"memory","scenario":"small","lang":"ts-bun","phase":"fixed","targetRps":7574,"runs":3,"failedRequests":0,"spread":{"rps":[7571.2737733355525,7572.828463218733],"p50ms":[1.2141520000000001,1.601218],"p95ms":[2.902657,3.150613],"p99ms":[3.6605280000000002,4.089759],"cpuMsPerReq":[0.05556066757772013,0.05673574691700335],"peakRssMb":[110.4609375,112.16015625]},"rps":7572.25014186146,"p50ms":1.4847860000000002,"p95ms":3.071811,"p99ms":3.9473169999999995,"cpuMsPerReq":0.05585817747291561,"peakRssMb":111.7890625},{"mode":"memory","scenario":"small","lang":"go","phase":"fixed","targetRps":7574,"runs":3,"failedRequests":0,"spread":{"rps":[7571.408671265466,7571.993633760961],"p50ms":[0.870163,1.199049],"p95ms":[2.725603,3.56444],"p99ms":[3.8982959999999998,5.633286],"cpuMsPerReq":[0.052528530114754314,0.054165666448797424],"peakRssMb":[28.93359375,29.25]},"rps":7571.959501258304,"p50ms":0.8918539999999999,"p95ms":2.912782,"p99ms":4.33561,"cpuMsPerReq":0.054010239178225075,"peakRssMb":29.2109375},{"mode":"memory","scenario":"large","lang":"ts","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[166.6106207639249,175.85729470125557],"p50ms":[293.223879,305.563621],"p95ms":[448.417775,482.043184],"p99ms":[3859.6055460000002,4274.707406],"cpuMsPerReq":[5.694054854635217,6.005649132947976],"peakRssMb":[218.46875,229.25390625]},"rps":172.36544072546104,"p50ms":301.03329,"p95ms":451.063286,"p99ms":3861.281582,"cpuMsPerReq":5.8368496915311265,"peakRssMb":224.62890625},{"mode":"memory","scenario":"large","lang":"ts-bun","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[215.54514085617748,221.03881063267883],"p50ms":[284.918026,291.83566],"p95ms":[314.077144,328.516156],"p99ms":[344.822985,408.134954],"cpuMsPerReq":[4.429638644366197,4.535567433468651],"peakRssMb":[228.9609375,238.5703125]},"rps":219.4235454014113,"p50ms":288.78392,"p95ms":320.20615499999997,"p99ms":374.065971,"cpuMsPerReq":4.47220195295162,"peakRssMb":236.81640625},{"mode":"memory","scenario":"large","lang":"go","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[187.60990657351843,189.05097271920712],"p50ms":[5.5712779999999995,5.626361],"p95ms":[1138.989952,1277.235875],"p99ms":[1262.845532,1846.2450939999999],"cpuMsPerReq":[5.16533590932509,5.201928423236514],"peakRssMb":[77.47265625,94.93359375]},"rps":188.15084013544964,"p50ms":5.620459,"p95ms":1175.073065,"p99ms":1786.8835669999999,"cpuMsPerReq":5.19010625,"peakRssMb":85.984375},{"mode":"memory","scenario":"large","lang":"ts","phase":"fixed","targetRps":86,"runs":3,"failedRequests":0,"spread":{"rps":[85.97185290992633,85.97530605223025],"p50ms":[4.804333,5.176628],"p95ms":[6.567399,6.994712],"p99ms":[7.866728999999999,9.448751],"cpuMsPerReq":[5.6414191860465115,5.731568023255814],"peakRssMb":[165.9609375,199.29296875]},"rps":85.97435853015428,"p50ms":4.813111999999999,"p95ms":6.703334,"p99ms":8.082254,"cpuMsPerReq":5.721509302325581,"peakRssMb":194.7578125},{"mode":"memory","scenario":"large","lang":"ts-bun","phase":"fixed","targetRps":86,"runs":3,"failedRequests":0,"spread":{"rps":[85.97129832730509,85.98514423055134],"p50ms":[4.548667,4.615711],"p95ms":[9.429057,9.72071],"p99ms":[12.357633,12.917508],"cpuMsPerReq":[5.246290697674419,5.293427325581395],"peakRssMb":[133.64453125,139.265625]},"rps":85.97318180937788,"p50ms":4.582363,"p95ms":9.515964,"p99ms":12.745085,"cpuMsPerReq":5.263580813953489,"peakRssMb":136.671875},{"mode":"memory","scenario":"large","lang":"go","phase":"fixed","targetRps":86,"runs":3,"failedRequests":0,"spread":{"rps":[85.9649249051122,85.97615110553649],"p50ms":[5.44625,5.553128],"p95ms":[6.741065,7.000125000000001],"p99ms":[7.4403749999999995,9.284974],"cpuMsPerReq":[5.874732558139535,5.953669767441861],"peakRssMb":[33.25,33.38671875]},"rps":85.97050508007169,"p50ms":5.537275999999999,"p95ms":6.92542,"p99ms":7.5885869999999995,"cpuMsPerReq":5.928356976744186,"peakRssMb":33.2578125},{"mode":"memory","scenario":"batch","lang":"ts","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[488.51716544014903,496.3769659398795],"p50ms":[124.095447,125.775317],"p95ms":[134.819584,145.964761],"p99ms":[226.43962100000002,267.065383],"cpuMsPerReq":[1.9960612326043738,2.0144056946688207],"peakRssMb":[153.15234375,169.28125]},"rps":493.9849685101901,"p50ms":125.346234,"p95ms":138.344741,"p99ms":231.691564,"cpuMsPerReq":1.9970539029746457,"peakRssMb":162.41796875},{"mode":"memory","scenario":"batch","lang":"ts-bun","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[712.013083487644,736.5752164290116],"p50ms":[85.82216600000001,88.397504],"p95ms":[97.022615,103.60546199999999],"p99ms":[102.38253999999999,113.533851],"cpuMsPerReq":[1.3405670297162835,1.385377953850431],"peakRssMb":[96.453125,99.42578125]},"rps":724.4455816103713,"p50ms":87.604923,"p95ms":100.312429,"p99ms":109.761486,"cpuMsPerReq":1.362455080799781,"peakRssMb":98.0546875},{"mode":"memory","scenario":"batch","lang":"go","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[569.5629711832946,613.4533330271001],"p50ms":[5.1448529999999995,5.419402],"p95ms":[707.987778,776.333425],"p99ms":[1762.6713320000001,2221.577618],"cpuMsPerReq":[1.60853940966591,1.7137472565755094],"peakRssMb":[34.078125,35.61328125]},"rps":606.0833705341909,"p50ms":5.399235,"p95ms":769.981569,"p99ms":1839.765929,"cpuMsPerReq":1.6250927260812582,"peakRssMb":34.16015625},{"mode":"memory","scenario":"batch","lang":"ts","phase":"fixed","targetRps":247,"runs":3,"failedRequests":0,"spread":{"rps":[246.8833616256992,246.9178628346575],"p50ms":[2.285796,2.366949],"p95ms":[4.1751949999999995,4.296074000000001],"p99ms":[4.740666,4.951467],"cpuMsPerReq":[2.086962955465587,2.10916541810083],"peakRssMb":[146.0390625,148.46484375]},"rps":246.90008681841715,"p50ms":2.344947,"p95ms":4.272703,"p99ms":4.854562,"cpuMsPerReq":2.0957536437246964,"peakRssMb":148.37109375},{"mode":"memory","scenario":"batch","lang":"ts-bun","phase":"fixed","targetRps":247,"runs":3,"failedRequests":0,"spread":{"rps":[246.89713376577637,246.91866620125478],"p50ms":[1.8019049999999999,2.109747],"p95ms":[4.687154,5.298927999999999],"p99ms":[7.156497000000001,8.753353],"cpuMsPerReq":[1.8575008097165993,1.925015182186235],"peakRssMb":[92.53125,95.265625]},"rps":246.90250768077314,"p50ms":1.8212599999999999,"p95ms":4.729268,"p99ms":7.915973,"cpuMsPerReq":1.871697975708502,"peakRssMb":93.51171875},{"mode":"memory","scenario":"batch","lang":"go","phase":"fixed","targetRps":247,"runs":3,"failedRequests":0,"spread":{"rps":[246.90912312196198,246.91922467204304],"p50ms":[1.602662,1.9592910000000001],"p95ms":[4.086322,5.123556],"p99ms":[5.525651000000001,7.255885999999999],"cpuMsPerReq":[1.882116194331984,1.9283123481781375],"peakRssMb":[33.10546875,33.71484375]},"rps":246.9188552788167,"p50ms":1.7292640000000001,"p95ms":4.801973,"p99ms":6.568944,"cpuMsPerReq":1.8859736842105261,"peakRssMb":33.35546875},{"mode":"real","scenario":"small","lang":"rust","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[3642.4385757649243,4779.527849919114],"p50ms":[10.097254999999999,13.284452],"p95ms":[19.042598,39.748397999999995],"p99ms":[94.66957500000001,108.608191],"cpuMsPerReq":[0.16011094155029684,0.21733268482490273],"peakRssMb":[14.9375,15.234375]},"rps":4751.8018704805845,"p50ms":10.317005,"p95ms":23.589082,"p99ms":107.731986,"cpuMsPerReq":0.1636551724137931,"peakRssMb":14.96875},{"mode":"real","scenario":"small","lang":"rust","phase":"fixed","targetRps":785,"runs":3,"failedRequests":0,"spread":{"rps":[783.2790164056333,784.7205297862264],"p50ms":[2.392311,2.708366],"p95ms":[5.657685,9.72809],"p99ms":[14.911044,22.163378],"cpuMsPerReq":[0.25711733588272784,0.3579664331210191],"peakRssMb":[23.24609375,23.38671875]},"rps":784.59302371344,"p50ms":2.539565,"p95ms":8.020430000000001,"p99ms":16.468001,"cpuMsPerReq":0.2963652461940251,"peakRssMb":23.24609375},{"mode":"real","scenario":"large","lang":"rust","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[165.65734941207234,170.71521672009197],"p50ms":[368.02956,383.542642],"p95ms":[498.091448,527.637783],"p99ms":[552.3607969999999,624.506513],"cpuMsPerReq":[4.653790778097983,4.8543616018845706],"peakRssMb":[104.9453125,112.5625]},"rps":169.1852161229547,"p50ms":373.27200300000004,"p95ms":511.80136899999997,"p99ms":571.855201,"cpuMsPerReq":4.703634482758621,"peakRssMb":108.109375},{"mode":"real","scenario":"large","lang":"rust","phase":"fixed","targetRps":56,"runs":3,"failedRequests":0,"spread":{"rps":[55.976393372297984,55.98301277492458],"p50ms":[10.375023,10.547981],"p95ms":[12.622715,12.759144],"p99ms":[16.659245,17.245261000000003],"cpuMsPerReq":[4.837976785714285,4.891211607142857],"peakRssMb":[23.68359375,24.22265625]},"rps":55.9816448810296,"p50ms":10.442055,"p95ms":12.658144,"p99ms":17.072594,"cpuMsPerReq":4.863474999999999,"peakRssMb":23.94921875},{"mode":"real","scenario":"batch","lang":"rust","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[77.37668343599815,81.2328544191576],"p50ms":[747.7179659999999,779.3962439999999],"p95ms":[1166.365044,1312.221674],"p99ms":[1384.3954629999998,1631.40315],"cpuMsPerReq":[8.420190419161678,9.10439039408867],"peakRssMb":[205.5546875,217.2578125]},"rps":80.43571759666071,"p50ms":770.5700089999999,"p95ms":1229.241988,"p99ms":1516.633687,"cpuMsPerReq":8.449842840512224,"peakRssMb":210.54296875},{"mode":"real","scenario":"batch","lang":"rust","phase":"fixed","targetRps":18,"runs":3,"failedRequests":0,"spread":{"rps":[17.983606811222703,17.99242125660806],"p50ms":[16.951236,17.856817],"p95ms":[24.903127,25.830749],"p99ms":[29.903527,35.707883],"cpuMsPerReq":[8.765941666666667,9.401858333333333],"peakRssMb":[36.8203125,37.08984375]},"rps":17.989263944315606,"p50ms":17.747234,"p95ms":25.480916,"p99ms":30.772857000000002,"cpuMsPerReq":9.254072222222222,"peakRssMb":36.94921875},{"mode":"memory","scenario":"small","lang":"rust","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[36132.235279230685,39767.81508591633],"p50ms":[1.5582449999999999,1.680703],"p95ms":[1.799894,2.239493],"p99ms":[2.186838,2.664116],"cpuMsPerReq":[0.02406108489885625,0.025152875190831248],"peakRssMb":[6.53125,6.80859375]},"rps":38074.8881021774,"p50ms":1.5714430000000001,"p95ms":2.082175,"p99ms":2.5729490000000004,"cpuMsPerReq":0.024488042511047543,"peakRssMb":6.76953125},{"mode":"memory","scenario":"small","lang":"rust","phase":"fixed","targetRps":7574,"runs":3,"failedRequests":0,"spread":{"rps":[7569.739059607595,7571.730735638872],"p50ms":[0.846053,1.240164],"p95ms":[2.8986870000000002,3.077992],"p99ms":[3.933275,5.496067],"cpuMsPerReq":[0.04367161824027676,0.04630663145733619],"peakRssMb":[19.78125,19.80078125]},"rps":7570.883238929867,"p50ms":0.8757189999999999,"p95ms":3.029224,"p99ms":4.110102,"cpuMsPerReq":0.045473452788084456,"peakRssMb":19.7890625},{"mode":"memory","scenario":"large","lang":"rust","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[247.22782402697848,250.83954706104555],"p50ms":[253.085161,255.90314400000003],"p95ms":[262.39791099999997,276.01030399999996],"p99ms":[270.970693,319.872347],"cpuMsPerReq":[3.867294826915597,3.9175330448465777],"peakRssMb":[43.49609375,44.3515625]},"rps":250.05748930993983,"p50ms":254.411365,"p95ms":274.688712,"p99ms":299.164273,"cpuMsPerReq":3.8775620608899297,"peakRssMb":44.2890625},{"mode":"memory","scenario":"large","lang":"rust","phase":"fixed","targetRps":86,"runs":3,"failedRequests":0,"spread":{"rps":[85.96175611757957,85.96995041171138],"p50ms":[5.438166000000001,5.491623000000001],"p95ms":[6.875382999999999,7.015797],"p99ms":[7.658282,7.788444999999999],"cpuMsPerReq":[5.015601744186046,5.092582558139535],"peakRssMb":[19.76171875,19.95703125]},"rps":85.96466555667524,"p50ms":5.450957,"p95ms":6.935923,"p99ms":7.699489000000001,"cpuMsPerReq":5.027248837209303,"peakRssMb":19.90234375},{"mode":"memory","scenario":"batch","lang":"rust","phase":"max","targetRps":null,"runs":3,"failedRequests":0,"spread":{"rps":[1093.4835944174158,1105.1435519565487],"p50ms":[57.071054000000004,57.69717],"p95ms":[60.243527,64.578483],"p99ms":[65.642314,69.105949],"cpuMsPerReq":[0.8935551959726716,0.9004592235657787],"peakRssMb":[11.7265625,12.0625]},"rps":1104.9596632019482,"p50ms":57.494633,"p95ms":64.24166000000001,"p99ms":67.128052,"cpuMsPerReq":0.8979879442195232,"peakRssMb":11.75390625},{"mode":"memory","scenario":"batch","lang":"rust","phase":"fixed","targetRps":247,"runs":3,"failedRequests":0,"spread":{"rps":[246.91065856334635,246.91773578836083],"p50ms":[1.883109,1.923733],"p95ms":[3.7086770000000002,4.239172],"p99ms":[5.209289,5.385412],"cpuMsPerReq":[1.5605953441295548,1.5978425101214575],"peakRssMb":[48.11328125,55.765625]},"rps":246.91549786225113,"p50ms":1.917983,"p95ms":4.087048,"p99ms":5.314746,"cpuMsPerReq":1.5904433198380568,"peakRssMb":54.19140625}];
+const LANGS = [
+  { key: 'ts', label: 'Node', color: 'var(--s1)' },
+  { key: 'ts-bun', label: 'Bun', color: 'var(--s2)' },
+  { key: 'go', label: 'Go', color: 'var(--s3)' },
+  { key: 'rust', label: 'Rust', color: 'var(--s4)' },
+].filter((l) => DATA.some((r) => r.lang === l.key));
+const SCENARIOS = [['small', 'Small email'], ['large', 'Large email + attachments'], ['batch', 'Batch of 50']];
+const METRICS = [
+  { phase: 'max', field: 'rps', title: 'Throughput per 1-CPU task', unit: 'req/s', better: 'higher is better', fmt: (v) => v >= 100 ? Math.round(v).toLocaleString() : v.toFixed(1) },
+  { phase: 'fixed', field: 'cpuMsPerReq', title: 'CPU time per request', unit: 'ms', better: 'lower is better, at equal load', fmt: (v) => v < 1 ? v.toFixed(3) : v.toFixed(1) },
+  { phase: 'fixed', field: 'peakRssMb', title: 'Peak memory (RSS)', unit: 'MB', better: 'lower is better, at equal load', fmt: (v) => Math.round(v).toString() },
+  { phase: 'fixed', field: 'p50ms', title: 'Median latency (p50)', unit: 'ms', better: 'lower is better, at equal load', fmt: (v) => v.toFixed(1) },
+  { phase: 'fixed', field: 'p99ms', title: 'Tail latency (p99)', unit: 'ms', better: 'lower is better, at equal load', fmt: (v) => v.toFixed(1) },
+];
+let mode = 'real';
+try { mode = localStorage.getItem('mailbench-mode') || 'real'; } catch {}
+
+document.getElementById('legend').innerHTML = LANGS.map((l) => `<span><i style="background:${l.color}"></i>${l.label}</span>`).join('');
+
+const tip = document.getElementById('tip');
+function showTip(e, r) {
+  const l = LANGS.find((x) => x.key === r.lang);
+  tip.innerHTML = `<b>${l.label} · ${r.scenario} · ${r.phase === 'max' ? 'max throughput' : `fixed ${r.targetRps} req/s`}</b>
+    <div>${Math.round(r.rps).toLocaleString()} req/s (runs: ${Math.round(r.spread.rps[0]).toLocaleString()}–${Math.round(r.spread.rps[1]).toLocaleString()}) · ${r.failedRequests} failed requests</div>
+    <div>p50 ${r.p50ms.toFixed(1)} ms · p95 ${r.p95ms.toFixed(1)} ms · p99 ${r.p99ms.toFixed(1)} ms</div>
+    <div>CPU ${r.cpuMsPerReq.toFixed(3)} ms/req · peak RSS ${Math.round(r.peakRssMb)} MB</div>`;
+  tip.style.display = 'block';
+  const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
+  const y = Math.min(e.clientY + 14, window.innerHeight - tip.offsetHeight - 8);
+  tip.style.left = `${x}px`; tip.style.top = `${y}px`;
+}
+
+function render() {
+  document.querySelectorAll('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+  const root = document.getElementById('charts');
+  root.innerHTML = '';
+  for (const m of METRICS) {
+    const h = document.createElement('h2');
+    h.className = 'metric-title';
+    h.innerHTML = `${m.title} <small>${m.unit}, ${m.better}</small>`;
+    root.appendChild(h);
+    for (const [sc, scLabel] of SCENARIOS) {
+      const rows = LANGS.map((l) => DATA.find((r) => r.mode === mode && r.scenario === sc && r.lang === l.key && r.phase === m.phase));
+      const max = Math.max(...rows.filter(Boolean).map((r) => r[m.field]));
+      const panel = document.createElement('div');
+      panel.className = 'panel';
+      const rate = rows.find(Boolean)?.targetRps;
+      panel.innerHTML = `<h3>${scLabel}${m.phase === 'fixed' && rate ? ` · ${rate} req/s` : ''}</h3>`;
+      rows.forEach((r, i) => {
+        if (!r) return;
+        const v = r[m.field];
+        const pct = max > 0 ? (v / max) * 76 : 0; // leave room for the outside label
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        const inside = false;
+        row.innerHTML = `<span class="name">${LANGS[i].label}</span>
+          <div class="track"><div class="bar" style="width:${pct}%;background:${LANGS[i].color}"></div>
+          <span class="val${inside ? ' inside' : ''}" style="left:${pct}%">${m.fmt(v)}</span><div class="hit"></div></div>`;
+        const hit = row.querySelector('.hit');
+        hit.addEventListener('mousemove', (e) => showTip(e, r));
+        hit.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+        panel.appendChild(row);
+      });
+      root.appendChild(panel);
+    }
+  }
+}
+
+document.querySelectorAll('.seg button').forEach((b) => b.addEventListener('click', () => {
+  mode = b.dataset.mode;
+  try { localStorage.setItem('mailbench-mode', mode); } catch {}
+  render();
+}));
+
+const cols = ['mode', 'scenario', 'lang', 'phase', 'targetRps', 'rps', 'p50ms', 'p95ms', 'p99ms', 'cpuMsPerReq', 'peakRssMb', 'runs', 'failedRequests'];
+document.getElementById('table').innerHTML = `<thead><tr>${cols.map((c) => `<th>${c}</th>`).join('')}</tr></thead><tbody>${
+  DATA.map((r) => `<tr>${cols.map((c) => {
+    const v = r[c];
+    return `<td>${typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(c === 'cpuMsPerReq' ? 3 : 1)) : (v ?? '')}</td>`;
+  }).join('')}</tr>`).join('')}</tbody>`;
+render();
+</script>
+</body>
+</html>

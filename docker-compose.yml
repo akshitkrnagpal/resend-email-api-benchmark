@@ -1,0 +1,40 @@
+# Shared dependencies. Servers are started separately by bench/run.ts (one at a time,
+# each pinned to 1 CPU / 2 GB like a single ECS task).
+name: mailbench
+
+services:
+  redis:
+    image: redis:8.2-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports: ["127.0.0.1:56379:6379"]
+
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: bench
+      POSTGRES_PASSWORD: bench
+      POSTGRES_DB: bench
+    command: ["postgres", "-c", "max_connections=200", "-c", "shared_buffers=256MB"]
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    ports: ["127.0.0.1:55433:5432"]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "bench"]
+      interval: 1s
+      retries: 30
+
+  s3:
+    image: versity/versitygw:latest
+    environment:
+      ROOT_ACCESS_KEY: bench
+      ROOT_SECRET_KEY: benchsecret
+      VGW_BACKEND: posix
+      VGW_BACKEND_ARG: /data
+      VGW_PORT: "7070"
+    entrypoint: ["/bin/sh", "-c", "mkdir -p /data/emails && exec versitygw --keep-alive --port :7070 posix /data"]
+    volumes:
+      - s3data:/data
+    ports: ["127.0.0.1:57070:7070"]
+
+volumes:
+  s3data:

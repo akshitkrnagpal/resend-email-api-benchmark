@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="932" viewBox="0 0 960 932" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="960" height="932" rx="12" fill="#fcfcfb"/>
+<text x="24" y="34" font-size="18" font-weight="600" fill="#0b0b0b">Email API: Node vs Bun vs Go vs Rust (real Redis + Postgres + S3)</text>
+<rect x="24" y="50" width="10" height="10" rx="2" fill="#2a78d6"/><text x="39" y="59" font-size="12" fill="#52514e">Node</text>
+<rect x="89" y="50" width="10" height="10" rx="2" fill="#eb6834"/><text x="104" y="59" font-size="12" fill="#52514e">Bun</text>
+<rect x="147" y="50" width="10" height="10" rx="2" fill="#1baf7a"/><text x="162" y="59" font-size="12" fill="#52514e">Go</text>
+<rect x="198" y="50" width="10" height="10" rx="2" fill="#eda100"/><text x="213" y="59" font-size="12" fill="#52514e">Rust</text>
+<text x="936" y="59" font-size="11" fill="#7a7974" text-anchor="end">median of 3 runs · 1 CPU / 2 GB per server</text>
+<text x="24" y="92" font-size="14" font-weight="600" fill="#0b0b0b">Throughput per 1-CPU container<tspan font-size="12" font-weight="400" fill="#7a7974">  req/s · higher is better</tspan></text>
+<rect x="24" y="102" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="119" font-size="11" fill="#52514e">Small email (2 KB)</text>
+<text x="34" y="139" font-size="11" fill="#52514e">Node</text>
+<path d="M84 128h53.520631081821904a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-53.520631081821904z" fill="#2a78d6"/>
+<text x="146.5206310818219" y="139" font-size="11" fill="#0b0b0b">1,569</text>
+<text x="34" y="161" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 150h81.42871530843404a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-81.42871530843404z" fill="#eb6834"/>
+<text x="174.42871530843405" y="161" font-size="11" fill="#0b0b0b">2,330</text>
+<text x="34" y="183" font-size="11" fill="#52514e">Go</text>
+<path d="M84 172h97.97038920246123a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-97.97038920246123z" fill="#1baf7a"/>
+<text x="190.97038920246123" y="183" font-size="11" fill="#0b0b0b">2,782</text>
+<text x="34" y="205" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 194h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#eda100"/>
+<text x="263.2" y="205" font-size="11" fill="#0b0b0b">4,752</text>
+<rect x="333.3333333333333" y="102" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="119" font-size="11" fill="#52514e">Large email + attachments (730 KB)</text>
+<text x="343.3333333333333" y="139" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 128h111.4798054928484a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-111.4798054928484z" fill="#2a78d6"/>
+<text x="513.8131388261818" y="139" font-size="11" fill="#0b0b0b">112</text>
+<text x="343.3333333333333" y="161" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 150h137.51588382203903a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-137.51588382203903z" fill="#eb6834"/>
+<text x="539.8492171553723" y="161" font-size="11" fill="#0b0b0b">137</text>
+<text x="343.3333333333333" y="183" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 172h135.73482792785302a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-135.73482792785302z" fill="#1baf7a"/>
+<text x="538.0681612611863" y="183" font-size="11" fill="#0b0b0b">136</text>
+<text x="343.3333333333333" y="205" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 194h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#eda100"/>
+<text x="572.5333333333333" y="205" font-size="11" fill="#0b0b0b">169</text>
+<rect x="642.6666666666666" y="102" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="119" font-size="11" fill="#52514e">Batch of 50</text>
+<text x="652.6666666666666" y="139" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 128h75.04429864379668a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-75.04429864379668z" fill="#2a78d6"/>
+<text x="786.7109653104633" y="139" font-size="11" fill="#0b0b0b">36.5</text>
+<text x="652.6666666666666" y="161" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 150h115.3555176023373a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-115.3555176023373z" fill="#eb6834"/>
+<text x="827.0221842690039" y="161" font-size="11" fill="#0b0b0b">55.1</text>
+<text x="652.6666666666666" y="183" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 172h157.5228851446804a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-157.5228851446804z" fill="#1baf7a"/>
+<text x="869.189551811347" y="183" font-size="11" fill="#0b0b0b">74.6</text>
+<text x="652.6666666666666" y="205" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 194h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#eda100"/>
+<text x="881.8666666666666" y="205" font-size="11" fill="#0b0b0b">80.4</text>
+<text x="24" y="262" font-size="14" font-weight="600" fill="#0b0b0b">CPU time per request<tspan font-size="12" font-weight="400" fill="#7a7974">  ms · lower is better · same load for all</tspan></text>
+<rect x="24" y="272" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="289" font-size="11" fill="#52514e">Small email (2 KB) · 785 req/s</text>
+<text x="34" y="309" font-size="11" fill="#52514e">Node</text>
+<path d="M84 298h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="263.2" y="309" font-size="11" fill="#0b0b0b">0.858</text>
+<text x="34" y="331" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 320h126.32675037840355a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-126.32675037840355z" fill="#eb6834"/>
+<text x="219.32675037840355" y="331" font-size="11" fill="#0b0b0b">0.642</text>
+<text x="34" y="353" font-size="11" fill="#52514e">Go</text>
+<path d="M84 342h69.71060833635573a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-69.71060833635573z" fill="#1baf7a"/>
+<text x="162.71060833635573" y="353" font-size="11" fill="#0b0b0b">0.363</text>
+<text x="34" y="375" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 364h56.148557321387266a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-56.148557321387266z" fill="#eda100"/>
+<text x="149.14855732138727" y="375" font-size="11" fill="#0b0b0b">0.296</text>
+<rect x="333.3333333333333" y="272" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="289" font-size="11" fill="#52514e">Large email + attachments (730 KB) · 56 req/s</text>
+<text x="343.3333333333333" y="309" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 298h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="572.5333333333333" y="309" font-size="11" fill="#0b0b0b">10.8</text>
+<text x="343.3333333333333" y="331" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 320h128.60315478446987a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-128.60315478446987z" fill="#eb6834"/>
+<text x="530.9364881178032" y="331" font-size="11" fill="#0b0b0b">8.3</text>
+<text x="343.3333333333333" y="353" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 342h108.42262486257557a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-108.42262486257557z" fill="#1baf7a"/>
+<text x="510.7559581959089" y="353" font-size="11" fill="#0b0b0b">7.0</text>
+<text x="343.3333333333333" y="375" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 364h74.14802712110864a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-74.14802712110864z" fill="#eda100"/>
+<text x="476.481360454442" y="375" font-size="11" fill="#0b0b0b">4.9</text>
+<rect x="642.6666666666666" y="272" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="289" font-size="11" fill="#52514e">Batch of 50 · 18 req/s</text>
+<text x="652.6666666666666" y="309" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 298h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="881.8666666666666" y="309" font-size="11" fill="#0b0b0b">23.9</text>
+<text x="652.6666666666666" y="331" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 320h118.47725680659978a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-118.47725680659978z" fill="#eb6834"/>
+<text x="830.1439234732665" y="331" font-size="11" fill="#0b0b0b">16.8</text>
+<text x="652.6666666666666" y="353" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 342h85.08201662955362a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-85.08201662955362z" fill="#1baf7a"/>
+<text x="796.7486832962203" y="353" font-size="11" fill="#0b0b0b">12.2</text>
+<text x="652.6666666666666" y="375" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 364h63.40527779494181a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-63.40527779494181z" fill="#eda100"/>
+<text x="775.0719444616084" y="375" font-size="11" fill="#0b0b0b">9.3</text>
+<text x="24" y="432" font-size="14" font-weight="600" fill="#0b0b0b">Peak memory (RSS)<tspan font-size="12" font-weight="400" fill="#7a7974">  MB · lower is better · same load for all</tspan></text>
+<rect x="24" y="442" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="459" font-size="11" fill="#52514e">Small email (2 KB) · 785 req/s</text>
+<text x="34" y="479" font-size="11" fill="#52514e">Node</text>
+<path d="M84 468h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="263.2" y="479" font-size="11" fill="#0b0b0b">185</text>
+<text x="34" y="501" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 490h150.27453947645745a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-150.27453947645745z" fill="#eb6834"/>
+<text x="243.27453947645745" y="501" font-size="11" fill="#0b0b0b">164</text>
+<text x="34" y="523" font-size="11" fill="#52514e">Go</text>
+<path d="M84 512h44.18899380348185a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-44.18899380348185z" fill="#1baf7a"/>
+<text x="137.18899380348185" y="523" font-size="11" fill="#0b0b0b">51</text>
+<text x="34" y="545" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 534h17.8493487332968a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-17.8493487332968z" fill="#eda100"/>
+<text x="110.84934873329681" y="545" font-size="11" fill="#0b0b0b">23</text>
+<rect x="333.3333333333333" y="442" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="459" font-size="11" fill="#52514e">Large email + attachments (730 KB) · 56 req/s</text>
+<text x="343.3333333333333" y="479" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 468h170.08149883789042a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.08149883789042z" fill="#2a78d6"/>
+<text x="572.4148321712237" y="479" font-size="11" fill="#0b0b0b">207</text>
+<text x="343.3333333333333" y="501" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 490h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#eb6834"/>
+<text x="572.5333333333333" y="501" font-size="11" fill="#0b0b0b">207</text>
+<text x="343.3333333333333" y="523" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 512h27.64310198219988a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-27.64310198219988z" fill="#1baf7a"/>
+<text x="429.9764353155332" y="523" font-size="11" fill="#0b0b0b">38</text>
+<text x="343.3333333333333" y="545" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 534h16.181406247047487a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-16.181406247047487z" fill="#eda100"/>
+<text x="418.5147395803808" y="545" font-size="11" fill="#0b0b0b">24</text>
+<rect x="642.6666666666666" y="442" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="459" font-size="11" fill="#52514e">Batch of 50 · 18 req/s</text>
+<text x="652.6666666666666" y="479" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 468h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="881.8666666666666" y="479" font-size="11" fill="#0b0b0b">166</text>
+<text x="652.6666666666666" y="501" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 490h138.79492957746479a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-138.79492957746479z" fill="#eb6834"/>
+<text x="850.4615962441314" y="501" font-size="11" fill="#0b0b0b">136</text>
+<text x="652.6666666666666" y="523" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 512h31.984976525821594a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-31.984976525821594z" fill="#1baf7a"/>
+<text x="743.6516431924882" y="523" font-size="11" fill="#0b0b0b">34</text>
+<text x="652.6666666666666" y="545" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 534h34.67976056338028a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-34.67976056338028z" fill="#eda100"/>
+<text x="746.3464272300469" y="545" font-size="11" fill="#0b0b0b">37</text>
+<text x="24" y="602" font-size="14" font-weight="600" fill="#0b0b0b">Median latency (p50)<tspan font-size="12" font-weight="400" fill="#7a7974">  ms · lower is better · same load for all</tspan></text>
+<rect x="24" y="612" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="629" font-size="11" fill="#52514e">Small email (2 KB) · 785 req/s</text>
+<text x="34" y="649" font-size="11" fill="#52514e">Node</text>
+<path d="M84 638h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="263.2" y="649" font-size="11" fill="#0b0b0b">3.4</text>
+<text x="34" y="671" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 660h148.55416389602038a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-148.55416389602038z" fill="#eb6834"/>
+<text x="241.55416389602038" y="671" font-size="11" fill="#0b0b0b">3.0</text>
+<text x="34" y="693" font-size="11" fill="#52514e">Go</text>
+<path d="M84 682h124.50268938376422a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-124.50268938376422z" fill="#1baf7a"/>
+<text x="217.50268938376422" y="693" font-size="11" fill="#0b0b0b">2.5</text>
+<text x="34" y="715" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 704h125.87680657145918a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-125.87680657145918z" fill="#eda100"/>
+<text x="218.87680657145918" y="715" font-size="11" fill="#0b0b0b">2.5</text>
+<rect x="333.3333333333333" y="612" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="629" font-size="11" fill="#52514e">Large email + attachments (730 KB) · 56 req/s</text>
+<text x="343.3333333333333" y="649" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 638h163.83052167382036a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-163.83052167382036z" fill="#2a78d6"/>
+<text x="566.1638550071536" y="649" font-size="11" fill="#0b0b0b">12.5</text>
+<text x="343.3333333333333" y="671" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 660h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#eb6834"/>
+<text x="572.5333333333333" y="671" font-size="11" fill="#0b0b0b">13.0</text>
+<text x="343.3333333333333" y="693" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 682h168.71464582470585a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-168.71464582470585z" fill="#1baf7a"/>
+<text x="571.0479791580392" y="693" font-size="11" fill="#0b0b0b">12.9</text>
+<text x="343.3333333333333" y="715" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 704h135.67822979504226a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-135.67822979504226z" fill="#eda100"/>
+<text x="538.0115631283755" y="715" font-size="11" fill="#0b0b0b">10.4</text>
+<rect x="642.6666666666666" y="612" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="629" font-size="11" fill="#52514e">Batch of 50 · 18 req/s</text>
+<text x="652.6666666666666" y="649" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 638h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="881.8666666666666" y="649" font-size="11" fill="#0b0b0b">22.0</text>
+<text x="652.6666666666666" y="671" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 660h138.76451174076482a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-138.76451174076482z" fill="#eb6834"/>
+<text x="850.4311784074314" y="671" font-size="11" fill="#0b0b0b">18.0</text>
+<text x="652.6666666666666" y="693" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 682h132.91446647877362a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-132.91446647877362z" fill="#1baf7a"/>
+<text x="844.5811331454403" y="693" font-size="11" fill="#0b0b0b">17.3</text>
+<text x="652.6666666666666" y="715" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 704h136.70440505445137a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-136.70440505445137z" fill="#eda100"/>
+<text x="848.371071721118" y="715" font-size="11" fill="#0b0b0b">17.7</text>
+<text x="24" y="772" font-size="14" font-weight="600" fill="#0b0b0b">Tail latency (p99)<tspan font-size="12" font-weight="400" fill="#7a7974">  ms · lower is better · same load for all</tspan></text>
+<rect x="24" y="782" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="799" font-size="11" fill="#52514e">Small email (2 KB) · 785 req/s</text>
+<text x="34" y="819" font-size="11" fill="#52514e">Node</text>
+<path d="M84 808h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="263.2" y="819" font-size="11" fill="#0b0b0b">76.7</text>
+<text x="34" y="841" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 830h87.18430378863331a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-87.18430378863331z" fill="#eb6834"/>
+<text x="180.18430378863331" y="841" font-size="11" fill="#0b0b0b">40.2</text>
+<text x="34" y="863" font-size="11" fill="#52514e">Go</text>
+<path d="M84 852h41.47912190989882a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-41.47912190989882z" fill="#1baf7a"/>
+<text x="134.47912190989882" y="863" font-size="11" fill="#0b0b0b">20.0</text>
+<text x="34" y="885" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 874h33.383822305695695a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-33.383822305695695z" fill="#eda100"/>
+<text x="126.3838223056957" y="885" font-size="11" fill="#0b0b0b">16.5</text>
+<rect x="333.3333333333333" y="782" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="799" font-size="11" fill="#52514e">Large email + attachments (730 KB) · 56 req/s</text>
+<text x="343.3333333333333" y="819" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 808h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="572.5333333333333" y="819" font-size="11" fill="#0b0b0b">48.3</text>
+<text x="343.3333333333333" y="841" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 830h140.70174516721164a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-140.70174516721164z" fill="#eb6834"/>
+<text x="543.035078500545" y="841" font-size="11" fill="#0b0b0b">40.1</text>
+<text x="343.3333333333333" y="863" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 852h90.10827523420183a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-90.10827523420183z" fill="#1baf7a"/>
+<text x="492.4416085675351" y="863" font-size="11" fill="#0b0b0b">26.1</text>
+<text x="343.3333333333333" y="885" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 874h57.56559376025149a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-57.56559376025149z" fill="#eda100"/>
+<text x="459.8989270935848" y="885" font-size="11" fill="#0b0b0b">17.1</text>
+<rect x="642.6666666666666" y="782" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="799" font-size="11" fill="#52514e">Batch of 50 · 18 req/s</text>
+<text x="652.6666666666666" y="819" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 808h170.2a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-170.2z" fill="#2a78d6"/>
+<text x="881.8666666666666" y="819" font-size="11" fill="#0b0b0b">42.4</text>
+<text x="652.6666666666666" y="841" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 830h159.23248117775375a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-159.23248117775375z" fill="#eb6834"/>
+<text x="870.8991478444204" y="841" font-size="11" fill="#0b0b0b">39.8</text>
+<text x="652.6666666666666" y="863" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 852h156.52337248493754a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-156.52337248493754z" fill="#1baf7a"/>
+<text x="868.1900391516042" y="863" font-size="11" fill="#0b0b0b">39.1</text>
+<text x="652.6666666666666" y="885" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 874h122.29796661852752a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-122.29796661852752z" fill="#eda100"/>
+<text x="833.9646332851942" y="885" font-size="11" fill="#0b0b0b">30.8</text>
+</svg>

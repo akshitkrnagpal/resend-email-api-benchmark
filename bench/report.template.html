@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email API Benchmark</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface: #fcfcfb;
+    --panel: #ffffff;
+    --border: #e6e5e0;
+    --grid: #efeee9;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #7a7974;
+    --s1: #2a78d6; /* Node */
+    --s2: #eb6834; /* Bun  */
+    --s3: #1baf7a; /* Go   */
+    --s4: #eda100; /* Rust */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface: #1a1a19; --panel: #222221; --border: #34342f; --grid: #2c2c29;
+      --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface: #1a1a19; --panel: #222221; --border: #34342f; --grid: #2c2c29;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface); color: var(--text-primary);
+    font: 14px/1.45 ui-sans-serif, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--text-secondary); margin: 0 0 16px; max-width: 760px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 0 0 16px; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .seg button { border: 0; background: transparent; color: var(--text-secondary); padding: 6px 12px; font: inherit; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--panel); color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--text-primary); }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; color: var(--text-secondary); font-size: 13px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .metric-title { grid-column: 1 / -1; margin: 18px 0 0; font-size: 15px; }
+  .metric-title small { color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px; min-width: 0; }
+  .panel h3 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+  .bar-row { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 8px; height: 26px; }
+  .bar-row .name { color: var(--text-secondary); font-size: 12px; white-space: nowrap; }
+  .track { position: relative; height: 16px; }
+  .bar { position: absolute; left: 0; top: 0; height: 16px; border-radius: 0 4px 4px 0; min-width: 2px; }
+  .val { position: absolute; top: 0; line-height: 16px; font-size: 12px; color: var(--text-primary);
+    font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 6px; }
+  .val.inside { color: #fff; padding: 0 6px 0 0; transform: translateX(-100%); }
+  .hit { position: absolute; inset: -5px 0; cursor: default; }
+  #tip { position: fixed; pointer-events: none; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 10px; font-size: 12px; color: var(--text-primary); box-shadow: 0 4px 16px rgba(0,0,0,.12); display: none; z-index: 10; }
+  #tip b { display: block; margin-bottom: 2px; }
+  #tip div { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  details { margin-top: 24px; }
+  summary { cursor: pointer; color: var(--text-secondary); }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; margin-top: 8px; font-size: 12px; font-variant-numeric: tabular-nums; width: 100%; }
+  th, td { text-align: right; padding: 4px 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
+  th { color: var(--text-secondary); font-weight: 600; }
+  .notes { color: var(--text-secondary); font-size: 13px; margin-top: 20px; max-width: 760px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Email API benchmark: Node vs Bun vs Go vs Rust</h1>
+  <p class="sub">The same Resend-style <code>POST /emails</code> service in TypeScript (on Node and on Bun), Go and Rust, each in a 1 CPU / 2 GB container.
+    Byte-identical behaviour verified by a parity harness (67/68 fixtures). Medians of 3 runs. Latency, CPU and memory are measured with all servers at the same fixed load.</p>
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Dependencies">
+      <button data-mode="real" aria-pressed="true">Real Redis + Postgres + S3</button>
+      <button data-mode="memory" aria-pressed="false">In-memory (pure language cost)</button>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+  <div class="grid" id="charts"></div>
+  <details>
+    <summary>Table view (all runs)</summary>
+    <div class="table-wrap"><table id="table"></table></div>
+  </details>
+  <p class="notes">Payloads: <b>small</b> = 2 KB transactional email (HTML→text), <b>large</b> = 730 KB newsletter with a 150 KB
+    serialized Node Buffer and a 100 KB base64 attachment, <b>batch</b> = 50 small emails. Medians of 3 interleaved runs on an
+    Apple M4 under OrbStack; hover a bar for the min–max across runs.</p>
+</main>
+<div id="tip" role="tooltip"></div>
+<script>
+const DATA = __DATA__;
+const LANGS = [
+  { key: 'ts', label: 'Node', color: 'var(--s1)' },
+  { key: 'ts-bun', label: 'Bun', color: 'var(--s2)' },
+  { key: 'go', label: 'Go', color: 'var(--s3)' },
+  { key: 'rust', label: 'Rust', color: 'var(--s4)' },
+].filter((l) => DATA.some((r) => r.lang === l.key));
+const SCENARIOS = [['small', 'Small email'], ['large', 'Large email + attachments'], ['batch', 'Batch of 50']];
+const METRICS = [
+  { phase: 'max', field: 'rps', title: 'Throughput per 1-CPU task', unit: 'req/s', better: 'higher is better', fmt: (v) => v >= 100 ? Math.round(v).toLocaleString() : v.toFixed(1) },
+  { phase: 'fixed', field: 'cpuMsPerReq', title: 'CPU time per request', unit: 'ms', better: 'lower is better, at equal load', fmt: (v) => v < 1 ? v.toFixed(3) : v.toFixed(1) },
+  { phase: 'fixed', field: 'peakRssMb', title: 'Peak memory (RSS)', unit: 'MB', better: 'lower is better, at equal load', fmt: (v) => Math.round(v).toString() },
+  { phase: 'fixed', field: 'p50ms', title: 'Median latency (p50)', unit: 'ms', better: 'lower is better, at equal load', fmt: (v) => v.toFixed(1) },
+  { phase: 'fixed', field: 'p99ms', title: 'Tail latency (p99)', unit: 'ms', better: 'lower is better, at equal load', fmt: (v) => v.toFixed(1) },
+];
+let mode = 'real';
+try { mode = localStorage.getItem('mailbench-mode') || 'real'; } catch {}
+
+document.getElementById('legend').innerHTML = LANGS.map((l) => `<span><i style="background:${l.color}"></i>${l.label}</span>`).join('');
+
+const tip = document.getElementById('tip');
+function showTip(e, r) {
+  const l = LANGS.find((x) => x.key === r.lang);
+  tip.innerHTML = `<b>${l.label} · ${r.scenario} · ${r.phase === 'max' ? 'max throughput' : `fixed ${r.targetRps} req/s`}</b>
+    <div>${Math.round(r.rps).toLocaleString()} req/s (runs: ${Math.round(r.spread.rps[0]).toLocaleString()}–${Math.round(r.spread.rps[1]).toLocaleString()}) · ${r.failedRequests} failed requests</div>
+    <div>p50 ${r.p50ms.toFixed(1)} ms · p95 ${r.p95ms.toFixed(1)} ms · p99 ${r.p99ms.toFixed(1)} ms</div>
+    <div>CPU ${r.cpuMsPerReq.toFixed(3)} ms/req · peak RSS ${Math.round(r.peakRssMb)} MB</div>`;
+  tip.style.display = 'block';
+  const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
+  const y = Math.min(e.clientY + 14, window.innerHeight - tip.offsetHeight - 8);
+  tip.style.left = `${x}px`; tip.style.top = `${y}px`;
+}
+
+function render() {
+  document.querySelectorAll('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+  const root = document.getElementById('charts');
+  root.innerHTML = '';
+  for (const m of METRICS) {
+    const h = document.createElement('h2');
+    h.className = 'metric-title';
+    h.innerHTML = `${m.title} <small>${m.unit}, ${m.better}</small>`;
+    root.appendChild(h);
+    for (const [sc, scLabel] of SCENARIOS) {
+      const rows = LANGS.map((l) => DATA.find((r) => r.mode === mode && r.scenario === sc && r.lang === l.key && r.phase === m.phase));
+      const max = Math.max(...rows.filter(Boolean).map((r) => r[m.field]));
+      const panel = document.createElement('div');
+      panel.className = 'panel';
+      const rate = rows.find(Boolean)?.targetRps;
+      panel.innerHTML = `<h3>${scLabel}${m.phase === 'fixed' && rate ? ` · ${rate} req/s` : ''}</h3>`;
+      rows.forEach((r, i) => {
+        if (!r) return;
+        const v = r[m.field];
+        const pct = max > 0 ? (v / max) * 76 : 0; // leave room for the outside label
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        const inside = false;
+        row.innerHTML = `<span class="name">${LANGS[i].label}</span>
+          <div class="track"><div class="bar" style="width:${pct}%;background:${LANGS[i].color}"></div>
+          <span class="val${inside ? ' inside' : ''}" style="left:${pct}%">${m.fmt(v)}</span><div class="hit"></div></div>`;
+        const hit = row.querySelector('.hit');
+        hit.addEventListener('mousemove', (e) => showTip(e, r));
+        hit.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+        panel.appendChild(row);
+      });
+      root.appendChild(panel);
+    }
+  }
+}
+
+document.querySelectorAll('.seg button').forEach((b) => b.addEventListener('click', () => {
+  mode = b.dataset.mode;
+  try { localStorage.setItem('mailbench-mode', mode); } catch {}
+  render();
+}));
+
+const cols = ['mode', 'scenario', 'lang', 'phase', 'targetRps', 'rps', 'p50ms', 'p95ms', 'p99ms', 'cpuMsPerReq', 'peakRssMb', 'runs', 'failedRequests'];
+document.getElementById('table').innerHTML = `<thead><tr>${cols.map((c) => `<th>${c}</th>`).join('')}</tr></thead><tbody>${
+  DATA.map((r) => `<tr>${cols.map((c) => {
+    const v = r[c];
+    return `<td>${typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(c === 'cpuMsPerReq' ? 3 : 1)) : (v ?? '')}</td>`;
+  }).join('')}</tr>`).join('')}</tbody>`;
+render();
+</script>
+</body>
+</html>
