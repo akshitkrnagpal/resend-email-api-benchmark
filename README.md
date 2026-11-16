@@ -5,9 +5,14 @@ In November 2026 Resend published [**Migrating our Email API to Go**](https://re
 and a seventh of the memory per task.
 
 I asked the obvious question in the replies: *why Go, not Rust?* The post doesn't say whether Rust was considered,
-so instead of guessing I built a smaller version of the same API in **TypeScript, Go and Rust**,
-made all three behave identically byte for byte, tuned each one as far as I reasonably could, and benchmarked them.
-TypeScript is run on both **Node** (what Resend used) and **Bun**.
+so instead of guessing I handed it to an AI coding agent, **Claude Opus 5.5** in Claude Code. I asked it for the best
+version of the same API in **TypeScript, Go and Rust**, benchmarked on the same metrics. That was about all I contributed.
+Opus wrote the spec from Resend's post, built the three servers, made them behave identically byte for byte, tuned each one,
+ran the benchmarks and wrote this README. It also added **Bun** next to **Node** (what Resend used) as a second TypeScript
+runtime. It took about three hours from my first message to this repo.
+
+I haven't reviewed every line, so all of it is here: code, parity tests and every raw run. If a port looks unfairly
+tuned, open a PR and the numbers get re-run.
 
 > Independent project. Not affiliated with or endorsed by Resend. Their real service does far more than this one;
 > this is a model of the request path their post describes, not their code.
@@ -21,14 +26,15 @@ TypeScript is run on both **Node** (what Resend used) and **Bun**.
   attachments it used **30% less CPU**; on batches, **24% less**.
 - **But Node → Go is the big jump, and Go → Rust is a much smaller one.** Go cut CPU per request by **58%** versus
   Node on small emails (Resend reported a similar 62%) and memory by about 3.6×. Rust's extra gain on top of that is real but modest.
-- **Users wouldn't notice.** With real Redis, Postgres and S3 in the path, median latency at the same load was
-  2.5 ms for both Go and Rust (3.4 ms for Node). Rust's advantage shows up in the tail (p99) and in the cloud bill.
-- **Go only got there after profiling.** My first straightforward Go port was *slower than Node* on large payloads,
+- **Median latency ties on small emails.** With real Redis, Postgres and S3 in the path, median latency at the same load on
+  small emails was 2.5 ms for both Go and Rust (3.4 ms for Node). Rust's latency edge shows up on large emails
+  (10.4 vs 12.9 ms median, 17 vs 26 ms p99), and its main win is CPU and memory.
+- **Go only got there after profiling.** The first straightforward Go port was *slower than Node* on large payloads,
   and Go's default thread count caused 90–150 ms p99 spikes in a 1-CPU container. Both are easy fixes once you see them.
 - **Bun is the cheapest win if you're staying on TypeScript.** Same code, no changes: 25% less CPU than Node on small emails,
   closing about 45–65% of the Node → Go CPU gap. Memory stays Node-sized.
 
-My take: Resend's choice makes sense. Go got most of the gain and is much easier to port a lenient JavaScript API to.
+Takeaway: Resend's choice makes sense. Go got most of the gain and is much easier to port a lenient JavaScript API to.
 Rust is measurably better if you run enough tasks for 20–30% of compute to matter.
 
 ## Results
@@ -116,7 +122,7 @@ all four servers, comparing status code, response body, the Postgres row and the
   `<` and `>` in output. Go 1.27's `encoding/json/v2` fixes both.
 - **serde rejects duplicate keys; `JSON.parse` keeps the last one.** The Rust port visits JSON objects by hand.
 - **The one remaining difference:** a number like `1e400` inside the JSON. JavaScript reads it as `Infinity`;
-  `serde_json` rejects the whole request. I left it in: it's the "strict vs lenient" gap in one line.
+  `serde_json` rejects the whole request. It's left in: it's the "strict vs lenient" gap in one line.
 
 ## The "best version" of each
 
@@ -129,9 +135,9 @@ the ones that didn't help were dropped.
 | **Go** | Fast path for all-integer Buffer arrays (halved large-payload CPU); `GOMAXPROCS=1`; AWS SDK idle pool raised from 10 to 1024 connections per host (batch: 44 → 70 req/s); profile-guided optimisation from a production-like profile | PGO itself: within noise, kept because it's free |
 | **Rust** | Fat LTO, `codegen-units = 1`, `panic = "abort"`; glibc `mmap_threshold` fixed at 128 KB (peak memory on large payloads: ~235 MB → ~24 MB) | mimalloc: no CPU gain, ~70% more memory |
 
-## Things I learned along the way
+## Things learned along the way
 
-**My first Go port was slower than Node on large payloads.** 84% of its CPU went into decoding the 150,000-number
+**The first Go port was slower than Node on large payloads.** 84% of its CPU went into decoding the 150,000-number
 Buffer array one JSON token at a time with `strconv.ParseFloat`. In an isolated Go benchmark, a 30-line fast path
 (validate the array once, then scan the digits by hand) took a large request from 10.6 ms to 5.2 ms. Node's
 `JSON.parse` is native C++ and serde has that fast path built in, so only Go needed this.
@@ -146,10 +152,10 @@ connections were opened and thrown away on every request.
 
 **glibc can hold onto memory for Rust.** After freeing large buffers glibc raises its mmap threshold, so later
 ~700 KB request bodies live on the heap and are never returned. Rust's peak RSS on large payloads was 236 MB,
-six times Go's, until I pinned the threshold. It was a one-line environment variable, not a code change.
+six times Go's, until the threshold was pinned. It was a one-line environment variable, not a code change.
 
-**Check your test dependencies too.** The local S3 server I used (versitygw) closes every connection by default,
-so every upload paid for a new TCP connection. Real S3 doesn't do that. Once I turned on keep-alive, every
+**Check your test dependencies too.** The local S3 server used here (versitygw) closes every connection by default,
+so every upload paid for a new TCP connection. Real S3 doesn't do that. Once keep-alive was turned on, every
 earlier result had to be thrown away and re-run.
 
 ## Methodology
@@ -163,7 +169,9 @@ earlier result had to be thrown away and re-run.
 - **Measurements:** CPU = cgroup `usage_usec` delta divided by requests. Memory = peak RSS of the server
   process (`VmHWM`).
 - **Repeats:** every run uses a fresh container and freshly wiped Redis, Postgres and S3. 3 runs per
-  measurement, interleaved across languages, median reported. 0 failed requests across all 144 runs.
+  measurement, interleaved across languages, median reported. The Rust numbers come from a separate
+  re-run at the same fixed rates after adding the glibc `mmap_threshold` setting (`results/run-rust-rerun.log`),
+  so they were not interleaved with the other languages. 0 failed requests across all 144 runs.
 - **Payloads:**
   - **small:** a 2 KB confirmation email, HTML only, so HTML → text runs.
   - **large:** a 60 KB newsletter plus a 150 KB attachment sent as a serialized Node Buffer and a 100 KB
