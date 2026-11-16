@@ -6,7 +6,8 @@
 //   Phase B, latency at equal load: every server gets the same fixed request rate
 //            (FIXED_FRACTION of the slowest server's median max), open loop with
 //            coordinated-omission correction, the way Resend compared Node and Go on a 50/50 split.
-// Every measurement is repeated REPEATS times with the servers interleaved, and the median is
+// Every measurement is repeated REPEATS times; each repeat runs the servers in a freshly shuffled
+// order (seeded, logged), and the median is
 // reported. Each run gets a fresh container (and fresh Redis/Postgres/S3 state in real mode),
 // a warmup, then CPU time (cgroup cpu.stat) and peak RSS (/proc/1/status VmHWM) are read.
 //
@@ -19,7 +20,8 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const resultsDir = join(here, '..', 'results');
-mkdirSync(join(resultsDir, 'raw'), { recursive: true });
+const RAW = process.env.RAW ?? 'raw';
+mkdirSync(join(resultsDir, RAW), { recursive: true });
 
 const env = process.env;
 const list = (v: string | undefined, d: string) => (v ?? d).split(',').filter(Boolean);
@@ -37,6 +39,15 @@ const NETWORK = 'mailbench_default';
 const OHA = 'ghcr.io/hatoo/oha:latest';
 const SERVER = 'mb-bench-server';
 const OUT = env.OUT ?? 'summary.json';
+// Closed-loop connections for the max-throughput phase. 64 left Go and Rust below full CPU,
+// so higher values are used to find real saturation.
+const MAX_CONNECTIONS = env.MAX_CONNECTIONS ?? '64';
+// PHASES=max runs only the max-throughput phase (used for the connection sweep).
+const PHASES = list(env.PHASES, 'max,fixed');
+// Seed for the per-repeat shuffle of server order (so no language always runs first or last).
+let seed = Number(env.SEED ?? '20261116');
+const rand = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+const shuffled = <T>(xs: T[]): T[] => { const a = [...xs]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 // Optional fixed rates from an earlier run, e.g. RATES='{"real-small":785}', so a re-run of one
 // server is measured at exactly the same load as the others.
 const RATES = JSON.parse(env.RATES ?? '{}') as Record<string, number>;
@@ -96,16 +107,18 @@ function stopServer(): void {
   sh(['rm', '-f', SERVER], { allowFail: true });
 }
 
-function cpuUsec(): number {
+interface CpuStat { usage: number; user: number; system: number; nrThrottled: number; throttled: number }
+function cpuStat(): CpuStat {
   const stat = sh(['exec', SERVER, 'cat', '/sys/fs/cgroup/cpu.stat']);
-  const m = /usage_usec (\d+)/.exec(stat);
-  return m ? Number(m[1]) : NaN;
+  const f = (k: string) => Number(new RegExp(`^${k} (\\d+)`, 'm').exec(stat)?.[1] ?? NaN);
+  return { usage: f('usage_usec'), user: f('user_usec'), system: f('system_usec'), nrThrottled: f('nr_throttled'), throttled: f('throttled_usec') };
 }
 
-function memory(): { peakRssMb: number; rssMb: number } {
+function memory(): { peakRssMb: number; rssMb: number; cgroupPeakMb: number; threads: number } {
   const status = sh(['exec', SERVER, 'cat', '/proc/1/status']);
   const kb = (k: string) => Number(new RegExp(`${k}:\\s+(\\d+)`).exec(status)?.[1] ?? NaN);
-  return { peakRssMb: kb('VmHWM') / 1024, rssMb: kb('VmRSS') / 1024 };
+  const cgPeak = Number(sh(['exec', SERVER, 'cat', '/sys/fs/cgroup/memory.peak'], { allowFail: true }).trim());
+  return { peakRssMb: kb('VmHWM') / 1024, rssMb: kb('VmRSS') / 1024, cgroupPeakMb: cgPeak / 1024 / 1024, threads: kb('Threads') };
 }
 
 interface OhaResult {
@@ -143,14 +156,21 @@ interface RunResult {
   p99ms: number;
   cpuMsPerReq: number;
   cpuUtilization: number;
+  userMsPerReq: number;
+  systemMsPerReq: number;
+  nrThrottled: number;
+  throttledMs: number;
   peakRssMb: number;
   rssMb: number;
+  cgroupPeakMb: number;
+  threads: number;
 }
 
 function summarize(
   r: OhaResult, meta: Pick<RunResult, 'rep' | 'mode' | 'scenario' | 'lang' | 'phase' | 'targetRps'>,
-  cpuDeltaUsec: number, seconds: number,
+  cpu: CpuStat, seconds: number,
 ): RunResult {
+  const cpuDeltaUsec = cpu.usage;
   const codes = r.statusCodeDistribution ?? {};
   const requests = Object.values(codes).reduce((a, b) => a + b, 0);
   const ok = codes['200'] ?? 0;
@@ -168,6 +188,10 @@ function summarize(
     p99ms: pct('p99'),
     cpuMsPerReq: cpuDeltaUsec / 1000 / Math.max(requests, 1),
     cpuUtilization: cpuDeltaUsec / 1e6 / seconds,
+    userMsPerReq: cpu.user / 1000 / Math.max(requests, 1),
+    systemMsPerReq: cpu.system / 1000 / Math.max(requests, 1),
+    nrThrottled: cpu.nrThrottled,
+    throttledMs: cpu.throttled / 1000,
     ...memory(),
   };
 }
@@ -178,17 +202,19 @@ async function measure(
   if (mode === 'real') await resetDeps();
   await startServer(lang, mode);
   try {
-    const load = rate === null ? ['-c', '64'] : ['-c', '512', '-q', String(rate), '--latency-correction'];
+    const load = rate === null ? ['-c', MAX_CONNECTIONS] : ['-c', '512', '-q', String(rate), '--latency-correction'];
     const warmLoad = rate === null ? ['-c', '32'] : load;
     oha(scenario, ['-z', `${WARMUP}s`, ...warmLoad]);
     const duration = phase === 'max' ? MAX_DURATION : FIXED_DURATION;
-    const c0 = cpuUsec();
+    const c0 = cpuStat();
     const t0 = performance.now();
     const r = oha(scenario, ['-z', `${duration}s`, ...load]);
     const seconds = (performance.now() - t0) / 1000;
-    const c1 = cpuUsec();
-    const result = summarize(r, { rep, mode, scenario, lang, phase, targetRps: rate }, c1 - c0, seconds);
-    writeFileSync(join(resultsDir, 'raw', `${mode}-${scenario}-${lang}-${phase}-${rep}.json`), JSON.stringify({ result, oha: r }, null, 2));
+    const c1 = cpuStat();
+    const delta: CpuStat = { usage: c1.usage - c0.usage, user: c1.user - c0.user, system: c1.system - c0.system,
+      nrThrottled: c1.nrThrottled - c0.nrThrottled, throttled: c1.throttled - c0.throttled };
+    const result = summarize(r, { rep, mode, scenario, lang, phase, targetRps: rate }, delta, seconds);
+    writeFileSync(join(resultsDir, RAW, `${mode}-${scenario}-${lang}-${phase}-${rep}.json`), JSON.stringify({ result, oha: r }, null, 2));
     return result;
   } finally {
     stopServer();
@@ -199,10 +225,10 @@ function fmt(r: RunResult): string {
   const bad = r.requests - r.ok;
   return `${r.lang.padEnd(8)} rps=${r.rps.toFixed(0).padStart(6)} p50=${r.p50ms.toFixed(1)}ms p95=${r.p95ms.toFixed(1)}ms ` +
     `p99=${r.p99ms.toFixed(1)}ms cpu/req=${r.cpuMsPerReq.toFixed(3)}ms cpu=${(r.cpuUtilization * 100).toFixed(0)}% ` +
-    `peakRSS=${r.peakRssMb.toFixed(0)}MB${bad > 0 ? `  NON-200=${bad} ${JSON.stringify(r.non200)} ${JSON.stringify(r.errors)}` : ''}`;
+    `peakRSS=${r.peakRssMb.toFixed(0)}MB cg=${r.cgroupPeakMb.toFixed(0)}MB thr=${r.threads} throttled=${r.throttledMs.toFixed(0)}ms${bad > 0 ? `  NON-200=${bad} ${JSON.stringify(r.non200)} ${JSON.stringify(r.errors)}` : ''}`;
 }
 
-const METRICS = ['rps', 'p50ms', 'p95ms', 'p99ms', 'cpuMsPerReq', 'peakRssMb'] as const;
+const METRICS = ['rps', 'p50ms', 'p95ms', 'p99ms', 'cpuMsPerReq', 'cpuUtilization', 'peakRssMb', 'cgroupPeakMb', 'throttledMs'] as const;
 type Metric = (typeof METRICS)[number];
 const median = (xs: number[]) => {
   const v = [...xs].sort((a, b) => a - b);
@@ -232,7 +258,7 @@ const all: RunResult[] = [];
 const medians: Median[] = [];
 const started = Date.now();
 const save = () => writeFileSync(join(resultsDir, OUT), JSON.stringify({
-  config: { CPUS, MEMORY, REPEATS, WARMUP, MAX_DURATION, FIXED_DURATION, FIXED_FRACTION, LANGS, MODES, SCENARIO_NAMES },
+  config: { CPUS, MEMORY, REPEATS, WARMUP, MAX_DURATION, FIXED_DURATION, FIXED_FRACTION, MAX_CONNECTIONS, PHASES, SEED: env.SEED ?? '20261116', LANGS, MODES, SCENARIO_NAMES },
   medians,
   runs: all,
 }, null, 2));
@@ -242,7 +268,9 @@ for (const mode of MODES) {
     console.log(`\n=== mode=${mode} scenario=${scenario} ===`);
     const maxRuns: RunResult[] = [];
     for (let rep = 1; rep <= REPEATS; rep++) {
-      for (const lang of LANGS) {
+      const order = shuffled(LANGS);
+      console.log(`order #${rep}: ${order.join(' ')}`);
+      for (const lang of order) {
         const r = await measure(rep, mode, scenario, lang, 'max', null);
         console.log(`[max #${rep}]   ${fmt(r)}`);
         maxRuns.push(r);
@@ -251,12 +279,15 @@ for (const mode of MODES) {
     all.push(...maxRuns);
     const maxMedians = LANGS.map((l) => medianOf(maxRuns.filter((r) => r.lang === l)));
     medians.push(...maxMedians);
+    if (!PHASES.includes('fixed')) { save(); continue; }
     const rate = RATES[`${mode}-${scenario}`] ??
       Math.max(1, Math.round(Math.min(...maxMedians.map((m) => m.rps)) * FIXED_FRACTION));
     console.log(`fixed rate = ${rate} req/s`);
     const fixedRuns: RunResult[] = [];
     for (let rep = 1; rep <= REPEATS; rep++) {
-      for (const lang of LANGS) {
+      const order = shuffled(LANGS);
+      console.log(`order #${rep}: ${order.join(' ')}`);
+      for (const lang of order) {
         const r = await measure(rep, mode, scenario, lang, 'fixed', rate);
         console.log(`[fixed #${rep}] ${fmt(r)}`);
         fixedRuns.push(r);

@@ -1,0 +1,67 @@
+{
+  "config": {
+    "LABEL": "v3/inflight-s3-2000ms-smol",
+    "DURATION": 180,
+    "MIX": {
+      "large": 56
+    },
+    "BURSTS": [],
+    "LAT": {
+      "s3": [
+        2000,
+        0
+      ],
+      "pg": [
+        0,
+        1
+      ],
+      "redis": [
+        0,
+        0
+      ]
+    },
+    "CONNECTIONS": "512",
+    "REPEATS": 1,
+    "LANGS": [
+      "ts-bun-smol"
+    ],
+    "SEED": "20261116",
+    "cpus": 1,
+    "memory": "2g"
+  },
+  "summary": [
+    {
+      "lang": "ts-bun-smol",
+      "peakRssMb": 993.5546875,
+      "cgroupPeakMb": 1007.16796875,
+      "medianRssMb": 661.888671875,
+      "cpuUtilization": 0.23719055682509413,
+      "spreadPeakRssMb": [
+        993.5546875,
+        993.5546875
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "lang": "ts-bun-smol",
+      "rep": 1,
+      "peakRssMb": 993.5546875,
+      "cgroupPeakMb": 1007.16796875,
+      "medianRssMb": 661.888671875,
+      "endRssMb": 388.8125,
+      "threads": 7,
+      "cpuUtilization": 0.23719055682509413,
+      "throttledMs": 0,
+      "classes": {
+        "large": {
+          "requests": 20160,
+          "failed": 0,
+          "p50ms": 2010.4016410000002,
+          "p95ms": 2014.3734599999998,
+          "p99ms": 2029.043422
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+
+##### 2 prodlike — 12:16:35
+config {"LABEL":"v3/prodlike","DURATION":180,"MIX":{"small":300,"large":10,"batch":3},"BURSTS":[{"scenario":"large","rate":60,"seconds":15,"every":60}],"LAT":{"s3":[40,20],"pg":[2,1],"redis":[1,0]},"CONNECTIONS":"512","REPEATS":1,"LANGS":["ts","ts-bun","go","rust"],"SEED":"20261116","cpus":1,"memory":"2g"}
+order #1: ts ts-bun go rust
+ts      rep 1: peakRSS 432 MB, cgroup 376 MB, median 269 MB, cpu 57%, throttled 22799 ms, threads 11 || small: p50 60 p99 413 fail 0/108000 | large: p50 69 p99 663 fail 0/6300 | batch: p50 92 p99 568 fail 0/1080 | burst-large: p50 310 p99 866 fail 0/2700
+ts-bun  rep 1: peakRSS 229 MB, cgroup 235 MB, median 75 MB, cpu 22%, throttled 0 ms, threads 7 || small: p50 53 p99 175 fail 0/108000 | large: p50 60 p99 193 fail 0/6300 | batch: p50 78 p99 180 fail 0/1080 | burst-large: p50 61 p99 92 fail 0/2700
+go      rep 1: peakRSS 92 MB, cgroup 109 MB, median 73 MB, cpu 22%, throttled 0 ms, threads 7 || small: p50 52 p99 115 fail 0/108000 | large: p50 61 p99 124 fail 0/6300 | batch: p50 77 p99 146 fail 0/1080 | burst-large: p50 58 p99 81 fail 0/2700
+rust    rep 1: peakRSS 102 MB, cgroup 105 MB, median 66 MB, cpu 17%, throttled 0 ms, threads 2 || small: p50 55 p99 133 fail 0/108000 | large: p50 62 p99 143 fail 0/6300 | batch: p50 81 p99 171 fail 0/1080 | burst-large: p50 58 p99 81 fail 0/2700
+wrote results/v3/prodlike/summary.json
+
+##### 3 inflight — 12:29:03
+config {"LABEL":"v3/inflight-s3-2000ms","DURATION":180,"MIX":{"large":56},"BURSTS":[],"LAT":{"s3":[2000,0],"pg":[0,1],"redis":[0,0]},"CONNECTIONS":"512","REPEATS":1,"LANGS":["ts","ts-bun","go","rust"],"SEED":"20261116","cpus":1,"memory":"2g"}
+order #1: ts ts-bun go rust
+ts      rep 1: peakRSS 759 MB, cgroup 773 MB, median 671 MB, cpu 34%, throttled 464 ms, threads 11 || large: p50 2011 p99 2085 fail 0/20160
+ts-bun  rep 1: peakRSS 1086 MB, cgroup 1119 MB, median 666 MB, cpu 24%, throttled 5 ms, threads 7 || large: p50 2010 p99 2034 fail 0/20160
+go      rep 1: peakRSS 251 MB, cgroup 265 MB, median 251 MB, cpu 25%, throttled 0 ms, threads 7 || large: p50 2010 p99 2034 fail 0/20160
+rust    rep 1: peakRSS 224 MB, cgroup 226 MB, median 203 MB, cpu 23%, throttled 0 ms, threads 2 || large: p50 2011 p99 2040 fail 0/20160
+wrote results/v3/inflight-s3-2000ms/summary.json
+
+##### done — 12:41:33

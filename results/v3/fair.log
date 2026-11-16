@@ -1,0 +1,184 @@
+
+##### capacity — 13:22:39
+config {"LABEL":"v3/capacity","STEP":25,"SLO_P99_MS":500,"BISECT":3,"K_MAX":16,"MIX":{"small":300,"large":10,"batch":3},"LAT":{"s3":[40,20],"pg":[2,1],"redis":[1,0]},"LANGS":["ts","ts-bun","go","rust"],"SEED":"7","cpus":1,"memory":"2g"}
+order: rust ts-bun ts go
+  rust    k= 1.000 PASS cpu  16% rss 57 MB  small p99 93 | large p99 95 | batch p99 124
+  rust    k= 2.000 PASS cpu  18% rss 68 MB  small p99 110 | large p99 108 | batch p99 125
+  rust    k= 4.000 FAIL cpu  41% rss 154 MB  small p99 1124 | large p99 1467 | batch p99 1490  <- small p99 1124 ms, large p99 1467 ms, batch p99 1490 ms
+  rust    k= 3.000 PASS cpu  35% rss 152 MB  small p99 319 | large p99 329 | batch p99 358
+  rust    k= 3.500 PASS cpu  34% rss 159 MB  small p99 397 | large p99 468 | batch p99 466
+  rust    k= 3.750 PASS cpu  33% rss 159 MB  small p99 125 | large p99 142 | batch p99 203
+rust    capacity k=3.750  (~1174 req/s of the mix within p99 <= 500 ms, 0 errors)
+  ts-bun  k= 1.000 PASS cpu  17% rss 59 MB  small p99 83 | large p99 98 | batch p99 158
+  ts-bun  k= 2.000 PASS cpu  17% rss 52 MB  small p99 151 | large p99 166 | batch p99 168
+  ts-bun  k= 4.000 PASS cpu  30% rss 59 MB  small p99 271 | large p99 276 | batch p99 310
+  ts-bun  k= 8.000 FAIL cpu  67% rss 71 MB  small p99 573 | large p99 584 | batch p99 608  <- small p99 573 ms, large p99 584 ms, batch p99 608 ms
+  ts-bun  k= 6.000 FAIL cpu  51% rss 59 MB  small p99 629 | large p99 696 | batch p99 723  <- small p99 629 ms, large p99 696 ms, batch p99 723 ms
+  ts-bun  k= 5.000 FAIL cpu  42% rss 45 MB  small p99 1077 | large p99 1078 | batch p99 1101  <- small p99 1077 ms, large p99 1078 ms, batch p99 1101 ms
+  ts-bun  k= 4.500 PASS cpu  39% rss 60 MB  small p99 376 | large p99 462 | batch p99 446
+ts-bun  capacity k=4.500  (~1409 req/s of the mix within p99 <= 500 ms, 0 errors)
+  ts      k= 1.000 PASS cpu  40% rss 189 MB  small p99 118 | large p99 148 | batch p99 161
+  ts      k= 2.000 PASS cpu  47% rss 207 MB  small p99 112 | large p99 107 | batch p99 159
+  ts      k= 4.000 FAIL cpu  91% rss 292 MB  small p99 657 | large p99 858 | batch p99 822  <- small p99 657 ms, large p99 858 ms, batch p99 822 ms
+  ts      k= 3.000 FAIL cpu  78% rss 276 MB  small p99 492 | large p99 544 | batch p99 554  <- large p99 544 ms, batch p99 554 ms
+  ts      k= 2.500 PASS cpu  59% rss 266 MB  small p99 269 | large p99 280 | batch p99 299
+  ts      k= 2.750 PASS cpu  65% rss 268 MB  small p99 111 | large p99 131 | batch p99 187
+ts      capacity k=2.750  (~861 req/s of the mix within p99 <= 500 ms, 0 errors)
+  go      k= 1.000 PASS cpu  19% rss 53 MB  small p99 77 | large p99 85 | batch p99 96
+  go      k= 2.000 PASS cpu  22% rss 94 MB  small p99 95 | large p99 109 | batch p99 140
+  go      k= 4.000 PASS cpu  42% rss 131 MB  small p99 313 | large p99 315 | batch p99 346
+  go      k= 8.000 FAIL cpu  80% rss 192 MB  small p99 4417 | large p99 1036 | batch p99 1059  <- small p99 4417 ms, small 2015.1/2400 req/s, large p99 1036 ms, batch p99 1059 ms
+  go      k= 6.000 FAIL cpu  71% rss 186 MB  small p99 649 | large p99 661 | batch p99 694  <- small p99 649 ms, large p99 661 ms, batch p99 694 ms
+  go      k= 5.000 PASS cpu  53% rss 134 MB  small p99 211 | large p99 212 | batch p99 247
+  go      k= 5.500 PASS cpu  62% rss 183 MB  small p99 410 | large p99 410 | batch p99 452
+go      capacity k=5.500  (~1722 req/s of the mix within p99 <= 500 ms, 0 errors)
+wrote results/v3/capacity/summary.json
+
+##### main r1 — 13:37:21
+
+=== mode=real scenario=small ===
+order #1: rust ts go ts-bun
+[max #1]   rust     rps=  7260 p50=28.2ms p95=39.2ms p99=284.7ms cpu/req=0.083ms cpu=56% peakRSS=30MB cg=35MB thr=2 throttled=0ms
+[max #1]   ts       rps=  3296 p50=68.0ms p95=106.3ms p99=291.8ms cpu/req=0.287ms cpu=90% peakRSS=208MB cg=252MB thr=11 throttled=2753ms
+[max #1]   go       rps=  6133 p50=33.0ms p95=64.9ms p99=288.9ms cpu/req=0.126ms cpu=73% peakRSS=81MB cg=77MB thr=6 throttled=0ms
+[max #1]   ts-bun   rps=  7270 p50=28.5ms p95=43.6ms p99=285.8ms cpu/req=0.092ms cpu=63% peakRSS=69MB cg=123MB thr=6 throttled=0ms
+fixed rate = 785 req/s
+order #1: ts-bun rust go ts
+[fixed #1] ts-bun   rps=   785 p50=1.7ms p95=3.3ms p99=23.0ms cpu/req=0.119ms cpu=9% peakRSS=60MB cg=33MB thr=6 throttled=0ms
+[fixed #1] rust     rps=   785 p50=1.6ms p95=3.2ms p99=14.3ms cpu/req=0.115ms cpu=9% peakRSS=23MB cg=32MB thr=2 throttled=0ms
+[fixed #1] go       rps=   785 p50=1.7ms p95=7.4ms p99=86.0ms cpu/req=0.198ms cpu=15% peakRSS=54MB cg=60MB thr=6 throttled=0ms
+[fixed #1] ts       rps=   784 p50=1.9ms p95=4.7ms p99=58.0ms cpu/req=0.438ms cpu=34% peakRSS=169MB cg=214MB thr=11 throttled=0ms
+
+=== mode=real scenario=large ===
+order #1: ts-bun go rust ts
+[max #1]   ts-bun   rps=   339 p50=699.1ms p95=1167.0ms p99=1437.8ms cpu/req=2.921ms cpu=92% peakRSS=1442MB cg=1500MB thr=8 throttled=492ms
+[max #1]   go       rps=   238 p50=1049.4ms p95=1523.2ms p99=1974.6ms cpu/req=3.597ms cpu=79% peakRSS=395MB cg=389MB thr=7 throttled=0ms
+[max #1]   rust     rps=   326 p50=784.4ms p95=995.5ms p99=1307.4ms cpu/req=2.473ms cpu=76% peakRSS=374MB cg=380MB thr=2 throttled=0ms
+[max #1]   ts       rps=   206 p50=660.3ms p95=7048.1ms p99=10573.1ms cpu/req=4.705ms cpu=93% peakRSS=872MB cg=912MB thr=11 throttled=1468ms
+fixed rate = 56 req/s
+order #1: rust go ts-bun ts
+[fixed #1] rust     rps=    56 p50=8.3ms p95=11.6ms p99=18.3ms cpu/req=3.552ms cpu=20% peakRSS=25MB cg=32MB thr=3 throttled=0ms
+[fixed #1] go       rps=    56 p50=8.3ms p95=11.5ms p99=15.8ms cpu/req=4.394ms cpu=24% peakRSS=38MB cg=44MB thr=6 throttled=0ms
+[fixed #1] ts-bun   rps=    56 p50=8.4ms p95=10.8ms p99=15.6ms cpu/req=3.851ms cpu=21% peakRSS=79MB cg=134MB thr=7 throttled=0ms
+[fixed #1] ts       rps=    56 p50=8.4ms p95=14.2ms p99=25.1ms cpu/req=7.322ms cpu=40% peakRSS=202MB cg=217MB thr=11 throttled=0ms
+
+=== mode=real scenario=batch ===
+order #1: go rust ts ts-bun
+[max #1]   go       rps=   105 p50=2319.3ms p95=3600.4ms p99=4134.0ms cpu/req=8.109ms cpu=80% peakRSS=1260MB cg=1277MB thr=6 throttled=2ms
+[max #1]   rust     rps=   115 p50=2112.7ms p95=4062.8ms p99=4794.1ms cpu/req=6.523ms cpu=71% peakRSS=766MB cg=775MB thr=95 throttled=735ms
+[max #1]   ts       rps=    59 p50=1950.0ms p95=12046.6ms p99=12588.9ms cpu/req=16.898ms cpu=96% peakRSS=565MB cg=602MB thr=11 throttled=8938ms
+[max #1]   ts-bun   rps=   113 p50=2191.7ms p95=2638.4ms p99=2680.4ms cpu/req=5.378ms cpu=58% peakRSS=555MB cg=621MB thr=7 throttled=280ms
+fixed rate = 18 req/s
+order #1: ts ts-bun rust go
+[fixed #1] ts       rps=    18 p50=19.1ms p95=29.5ms p99=75.6ms cpu/req=22.155ms cpu=39% peakRSS=165MB cg=116MB thr=11 throttled=41ms
+[fixed #1] ts-bun   rps=    18 p50=18.1ms p95=24.6ms p99=28.9ms cpu/req=9.509ms cpu=17% peakRSS=69MB cg=45MB thr=7 throttled=0ms
+[fixed #1] rust     rps=    18 p50=18.8ms p95=26.2ms p99=31.0ms cpu/req=10.420ms cpu=18% peakRSS=38MB cg=43MB thr=2 throttled=0ms
+[fixed #1] go       rps=    18 p50=19.2ms p95=27.2ms p99=39.2ms cpu/req=13.450ms cpu=24% peakRSS=35MB cg=43MB thr=6 throttled=0ms
+
+done in 10.3 min -> results/v3/main-r1.json
+
+##### main r2 — 13:47:39
+
+=== mode=real scenario=small ===
+order #1: ts-bun go ts rust
+[max #1]   ts-bun   rps=  6166 p50=26.2ms p95=85.2ms p99=367.9ms cpu/req=0.100ms cpu=58% peakRSS=70MB cg=124MB thr=7 throttled=1ms
+[max #1]   go       rps=  5509 p50=36.4ms p95=77.4ms p99=307.0ms cpu/req=0.153ms cpu=80% peakRSS=75MB cg=69MB thr=6 throttled=5ms
+[max #1]   ts       rps=  2772 p50=84.3ms p95=174.1ms p99=291.5ms cpu/req=0.347ms cpu=91% peakRSS=199MB cg=241MB thr=11 throttled=2884ms
+[max #1]   rust     rps=  4036 p50=48.3ms p95=168.6ms p99=292.7ms cpu/req=0.158ms cpu=62% peakRSS=34MB cg=39MB thr=2 throttled=0ms
+fixed rate = 785 req/s
+order #1: go ts-bun rust ts
+[fixed #1] go       rps=   785 p50=2.1ms p95=15.8ms p99=144.7ms cpu/req=0.254ms cpu=20% peakRSS=57MB cg=66MB thr=6 throttled=0ms
+[fixed #1] ts-bun   rps=   785 p50=1.7ms p95=3.7ms p99=16.4ms cpu/req=0.168ms cpu=13% peakRSS=58MB cg=111MB thr=6 throttled=0ms
+[fixed #1] rust     rps=   785 p50=2.1ms p95=35.7ms p99=237.3ms cpu/req=0.187ms cpu=14% peakRSS=26MB cg=25MB thr=6 throttled=0ms
+[fixed #1] ts       rps=   785 p50=5.5ms p95=161.5ms p99=266.5ms cpu/req=0.841ms cpu=64% peakRSS=179MB cg=221MB thr=11 throttled=483ms
+
+=== mode=real scenario=large ===
+order #1: ts-bun ts rust go
+[max #1]   ts-bun   rps=   193 p50=1259.2ms p95=2154.5ms p99=2327.8ms cpu/req=5.154ms cpu=94% peakRSS=1653MB cg=1707MB thr=8 throttled=752ms
+[max #1]   ts       rps=   166 p50=674.7ms p95=9760.9ms p99=10561.8ms cpu/req=5.806ms cpu=93% peakRSS=938MB cg=979MB thr=11 throttled=2044ms
+[max #1]   rust     rps=   316 p50=800.4ms p95=1089.9ms p99=1315.0ms cpu/req=2.517ms cpu=75% peakRSS=370MB cg=371MB thr=2 throttled=0ms
+[max #1]   go       rps=   258 p50=991.9ms p95=1288.7ms p99=1610.6ms cpu/req=3.307ms cpu=81% peakRSS=234MB cg=240MB thr=6 throttled=3ms
+fixed rate = 56 req/s
+order #1: go ts-bun ts rust
+[fixed #1] go       rps=    56 p50=8.3ms p95=11.6ms p99=22.6ms cpu/req=4.071ms cpu=22% peakRSS=38MB cg=33MB thr=7 throttled=0ms
+[fixed #1] ts-bun   rps=    56 p50=8.6ms p95=11.0ms p99=16.8ms cpu/req=3.892ms cpu=22% peakRSS=88MB cg=140MB thr=7 throttled=0ms
+[fixed #1] ts       rps=    56 p50=8.3ms p95=12.0ms p99=25.4ms cpu/req=6.398ms cpu=35% peakRSS=189MB cg=213MB thr=11 throttled=6ms
+[fixed #1] rust     rps=    56 p50=8.4ms p95=12.1ms p99=19.4ms cpu/req=3.633ms cpu=20% peakRSS=25MB cg=33MB thr=3 throttled=0ms
+
+=== mode=real scenario=batch ===
+order #1: go rust ts ts-bun
+[max #1]   go       rps=   113 p50=2130.3ms p95=3108.8ms p99=3789.4ms cpu/req=7.353ms cpu=78% peakRSS=1312MB cg=1328MB thr=6 throttled=3ms
+[max #1]   rust     rps=   124 p50=2135.1ms p95=2983.0ms p99=3282.5ms cpu/req=6.393ms cpu=76% peakRSS=837MB cg=836MB thr=73 throttled=526ms  NON-200=44 {"500":44} {}
+[max #1]   ts       rps=    60 p50=1605.3ms p95=11826.4ms p99=12198.6ms cpu/req=16.565ms cpu=97% peakRSS=482MB cg=526MB thr=11 throttled=8219ms
+[max #1]   ts-bun   rps=   124 p50=2009.8ms p95=2266.2ms p99=2306.2ms cpu/req=4.635ms cpu=55% peakRSS=566MB cg=644MB thr=7 throttled=192ms
+fixed rate = 18 req/s
+order #1: ts go rust ts-bun
+[fixed #1] ts       rps=    18 p50=19.7ms p95=26.2ms p99=31.3ms cpu/req=21.066ms cpu=37% peakRSS=165MB cg=209MB thr=11 throttled=15ms
+[fixed #1] go       rps=    18 p50=19.6ms p95=26.4ms p99=30.4ms cpu/req=13.472ms cpu=24% peakRSS=34MB cg=44MB thr=6 throttled=0ms
+[fixed #1] rust     rps=    18 p50=18.9ms p95=26.8ms p99=35.8ms cpu/req=10.290ms cpu=18% peakRSS=40MB cg=43MB thr=2 throttled=0ms
+[fixed #1] ts-bun   rps=    18 p50=18.1ms p95=24.8ms p99=28.6ms cpu/req=9.509ms cpu=17% peakRSS=71MB cg=130MB thr=7 throttled=0ms
+
+done in 10.1 min -> results/v3/main-r2.json
+
+##### main r3 — 13:57:48
+
+=== mode=real scenario=small ===
+order #1: rust ts go ts-bun
+[max #1]   rust     rps=  7113 p50=25.9ms p95=67.2ms p99=302.7ms cpu/req=0.097ms cpu=65% peakRSS=31MB cg=30MB thr=12 throttled=0ms
+[max #1]   ts       rps=  3106 p50=77.0ms p95=126.7ms p99=282.7ms cpu/req=0.311ms cpu=92% peakRSS=199MB cg=244MB thr=11 throttled=3074ms
+[max #1]   go       rps=  6203 p50=32.9ms p95=55.7ms p99=304.3ms cpu/req=0.132ms cpu=77% peakRSS=79MB cg=83MB thr=6 throttled=1ms
+[max #1]   ts-bun   rps=  6541 p50=25.4ms p95=93.6ms p99=309.5ms cpu/req=0.111ms cpu=68% peakRSS=72MB cg=123MB thr=7 throttled=47ms
+fixed rate = 785 req/s
+order #1: ts ts-bun go rust
+[fixed #1] ts       rps=   785 p50=1.9ms p95=4.7ms p99=66.2ms cpu/req=0.428ms cpu=33% peakRSS=173MB cg=213MB thr=11 throttled=0ms
+[fixed #1] ts-bun   rps=   785 p50=2.1ms p95=8.6ms p99=61.2ms cpu/req=0.221ms cpu=17% peakRSS=64MB cg=39MB thr=6 throttled=0ms
+[fixed #1] go       rps=   785 p50=1.7ms p95=13.3ms p99=139.6ms cpu/req=0.209ms cpu=16% peakRSS=55MB cg=63MB thr=7 throttled=0ms
+[fixed #1] rust     rps=   785 p50=1.6ms p95=46.1ms p99=205.0ms cpu/req=0.132ms cpu=10% peakRSS=27MB cg=32MB thr=2 throttled=0ms
+
+=== mode=real scenario=large ===
+order #1: go ts ts-bun rust
+[max #1]   go       rps=   201 p50=1280.0ms p95=1868.1ms p99=2281.0ms cpu/req=4.219ms cpu=80% peakRSS=402MB cg=406MB thr=6 throttled=0ms
+[max #1]   ts       rps=   167 p50=774.3ms p95=9740.6ms p99=10565.2ms cpu/req=5.877ms cpu=96% peakRSS=909MB cg=910MB thr=11 throttled=2075ms
+[max #1]   ts-bun   rps=   317 p50=747.0ms p95=1303.0ms p99=1646.6ms cpu/req=3.139ms cpu=96% peakRSS=1683MB cg=1745MB thr=8 throttled=624ms
+[max #1]   rust     rps=   247 p50=1027.3ms p95=1342.0ms p99=1824.9ms cpu/req=3.258ms cpu=76% peakRSS=353MB cg=352MB thr=10 throttled=8ms
+fixed rate = 56 req/s
+order #1: rust ts-bun go ts
+[fixed #1] rust     rps=    56 p50=7.5ms p95=12.2ms p99=29.5ms cpu/req=3.436ms cpu=19% peakRSS=25MB cg=29MB thr=2 throttled=0ms
+[fixed #1] ts-bun   rps=    56 p50=8.7ms p95=14.5ms p99=23.9ms cpu/req=3.936ms cpu=22% peakRSS=91MB cg=67MB thr=6 throttled=0ms
+[fixed #1] go       rps=    56 p50=8.4ms p95=11.6ms p99=16.3ms cpu/req=4.349ms cpu=24% peakRSS=37MB cg=42MB thr=6 throttled=0ms
+[fixed #1] ts       rps=    56 p50=8.3ms p95=11.6ms p99=14.8ms cpu/req=6.239ms cpu=34% peakRSS=193MB cg=235MB thr=11 throttled=0ms
+
+=== mode=real scenario=batch ===
+order #1: go ts-bun ts rust
+[max #1]   go       rps=   114 p50=2187.0ms p95=2981.7ms p99=3876.7ms cpu/req=7.656ms cpu=83% peakRSS=1313MB cg=1323MB thr=6 throttled=4ms
+[max #1]   ts-bun   rps=   128 p50=2009.9ms p95=2173.9ms p99=2233.4ms cpu/req=4.145ms cpu=51% peakRSS=557MB cg=635MB thr=7 throttled=180ms
+[max #1]   ts       rps=    63 p50=1854.7ms p95=12116.8ms p99=12427.4ms cpu/req=16.030ms cpu=96% peakRSS=577MB cg=580MB thr=11 throttled=10216ms
+[max #1]   rust     rps=   106 p50=2215.9ms p95=4569.8ms p99=5304.2ms cpu/req=6.759ms cpu=68% peakRSS=777MB cg=788MB thr=103 throttled=889ms  NON-200=3 {"500":3} {}
+fixed rate = 18 req/s
+order #1: rust ts ts-bun go
+[fixed #1] rust     rps=    18 p50=19.4ms p95=27.4ms p99=33.8ms cpu/req=10.217ms cpu=18% peakRSS=37MB cg=36MB thr=2 throttled=0ms
+[fixed #1] ts       rps=    18 p50=19.6ms p95=25.7ms p99=32.4ms cpu/req=21.071ms cpu=37% peakRSS=168MB cg=121MB thr=11 throttled=0ms
+[fixed #1] ts-bun   rps=    18 p50=17.5ms p95=25.8ms p99=31.3ms cpu/req=9.097ms cpu=16% peakRSS=71MB cg=100MB thr=8 throttled=0ms
+[fixed #1] go       rps=    18 p50=19.6ms p95=26.5ms p99=31.5ms cpu/req=13.629ms cpu=24% peakRSS=34MB cg=42MB thr=7 throttled=0ms
+
+done in 10.1 min -> results/v3/main-r3.json
+
+##### prodlike r2 — 14:07:56
+config {"LABEL":"v3/prodlike-r2","DURATION":180,"MIX":{"small":300,"large":10,"batch":3},"BURSTS":[{"scenario":"large","rate":60,"seconds":15,"every":60}],"LAT":{"s3":[40,20],"pg":[2,1],"redis":[1,0]},"CONNECTIONS":"512","REPEATS":1,"LANGS":["ts","ts-bun","go","rust"],"SEED":"2002","cpus":1,"memory":"2g"}
+order #1: ts ts-bun go rust
+ts      rep 1: peakRSS 273 MB, cgroup 274 MB, median 213 MB, cpu 49%, throttled 3180 ms, threads 11 || small: p50 56 p99 172 fail 0/108000 | large: p50 63 p99 209 fail 0/6300 | batch: p50 86 p99 240 fail 0/1080 | burst-large: p50 63 p99 351 fail 0/2700
+ts-bun  rep 1: peakRSS 176 MB, cgroup 189 MB, median 74 MB, cpu 19%, throttled 0 ms, threads 7 || small: p50 52 p99 120 fail 0/108000 | large: p50 59 p99 125 fail 0/6300 | batch: p50 77 p99 162 fail 0/1080 | burst-large: p50 57 p99 118 fail 0/2700
+go      rep 1: peakRSS 97 MB, cgroup 111 MB, median 75 MB, cpu 25%, throttled 0 ms, threads 7 || small: p50 53 p99 185 fail 0/108000 | large: p50 60 p99 189 fail 0/6300 | batch: p50 78 p99 223 fail 0/1080 | burst-large: p50 57 p99 93 fail 0/2700
+rust    rep 1: peakRSS 105 MB, cgroup 112 MB, median 69 MB, cpu 23%, throttled 0 ms, threads 2 || small: p50 57 p99 181 fail 0/108000 | large: p50 63 p99 202 fail 0/6300 | batch: p50 83 p99 186 fail 0/1080 | burst-large: p50 64 p99 134 fail 0/2700
+wrote results/v3/prodlike-r2/summary.json
+
+##### prodlike r3 — 14:20:22
+config {"LABEL":"v3/prodlike-r3","DURATION":180,"MIX":{"small":300,"large":10,"batch":3},"BURSTS":[{"scenario":"large","rate":60,"seconds":15,"every":60}],"LAT":{"s3":[40,20],"pg":[2,1],"redis":[1,0]},"CONNECTIONS":"512","REPEATS":1,"LANGS":["ts","ts-bun","go","rust"],"SEED":"2003","cpus":1,"memory":"2g"}
+order #1: go ts rust ts-bun
+go      rep 1: peakRSS 175 MB, cgroup 183 MB, median 99 MB, cpu 34%, throttled 172 ms, threads 7 || small: p50 60 p99 675 fail 0/108000 | large: p50 67 p99 688 fail 0/6300 | batch: p50 87 p99 831 fail 0/1080 | burst-large: p50 122 p99 1143 fail 0/2700
+ts      rep 1: peakRSS 1257 MB, cgroup 1261 MB, median 240 MB, cpu 70%, throttled 23797 ms, threads 11 || small: p50 82 p99 4572 fail 0/108000 | large: p50 92 p99 3529 fail 0/6300 | batch: p50 133 p99 10934 fail 0/1080 | burst-large: p50 58 p99 136 fail 0/2700
+rust    rep 1: peakRSS 96 MB, cgroup 101 MB, median 69 MB, cpu 20%, throttled 2 ms, threads 2 || small: p50 56 p99 123 fail 0/108000 | large: p50 64 p99 133 fail 0/6300 | batch: p50 82 p99 152 fail 0/1080 | burst-large: p50 68 p99 145 fail 0/2700
+ts-bun  rep 1: peakRSS 324 MB, cgroup 335 MB, median 74 MB, cpu 23%, throttled 29 ms, threads 6 || small: p50 55 p99 442 fail 0/108000 | large: p50 62 p99 445 fail 0/6300 | batch: p50 79 p99 509 fail 0/1080 | burst-large: p50 55 p99 78 fail 0/2700
+wrote results/v3/prodlike-r3/summary.json
+
+##### done — 14:32:51

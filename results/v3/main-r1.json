@@ -1,0 +1,2003 @@
+{
+  "config": {
+    "CPUS": "1",
+    "MEMORY": "2g",
+    "REPEATS": 1,
+    "WARMUP": 5,
+    "MAX_DURATION": 10,
+    "FIXED_DURATION": 20,
+    "FIXED_FRACTION": 0.5,
+    "MAX_CONNECTIONS": "256",
+    "PHASES": [
+      "max",
+      "fixed"
+    ],
+    "SEED": "1001",
+    "LANGS": [
+      "ts",
+      "ts-bun",
+      "go",
+      "rust"
+    ],
+    "MODES": [
+      "real"
+    ],
+    "SCENARIO_NAMES": [
+      "small",
+      "large",
+      "batch"
+    ]
+  },
+  "medians": [
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          3295.817163725131,
+          3295.817163725131
+        ],
+        "p50ms": [
+          68.005536,
+          68.005536
+        ],
+        "p95ms": [
+          106.31885000000001,
+          106.31885000000001
+        ],
+        "p99ms": [
+          291.80102800000003,
+          291.80102800000003
+        ],
+        "cpuMsPerReq": [
+          0.28701669333172336,
+          0.28701669333172336
+        ],
+        "cpuUtilization": [
+          0.8994455540555955,
+          0.8994455540555955
+        ],
+        "peakRssMb": [
+          208.30078125,
+          208.30078125
+        ],
+        "cgroupPeakMb": [
+          252.10546875,
+          252.10546875
+        ],
+        "throttledMs": [
+          2752.923,
+          2752.923
+        ]
+      },
+      "rps": 3295.817163725131,
+      "p50ms": 68.005536,
+      "p95ms": 106.31885000000001,
+      "p99ms": 291.80102800000003,
+      "cpuMsPerReq": 0.28701669333172336,
+      "cpuUtilization": 0.8994455540555955,
+      "peakRssMb": 208.30078125,
+      "cgroupPeakMb": 252.10546875,
+      "throttledMs": 2752.923
+    },
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts-bun",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          7270.136177663706,
+          7270.136177663706
+        ],
+        "p50ms": [
+          28.522101000000003,
+          28.522101000000003
+        ],
+        "p95ms": [
+          43.619628,
+          43.619628
+        ],
+        "p99ms": [
+          285.783426,
+          285.783426
+        ],
+        "cpuMsPerReq": [
+          0.09230937975881796,
+          0.09230937975881796
+        ],
+        "cpuUtilization": [
+          0.6274103926210972,
+          0.6274103926210972
+        ],
+        "peakRssMb": [
+          68.91796875,
+          68.91796875
+        ],
+        "cgroupPeakMb": [
+          123.38671875,
+          123.38671875
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 7270.136177663706,
+      "p50ms": 28.522101000000003,
+      "p95ms": 43.619628,
+      "p99ms": 285.783426,
+      "cpuMsPerReq": 0.09230937975881796,
+      "cpuUtilization": 0.6274103926210972,
+      "peakRssMb": 68.91796875,
+      "cgroupPeakMb": 123.38671875,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "go",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          6133.202831067958,
+          6133.202831067958
+        ],
+        "p50ms": [
+          32.998418,
+          32.998418
+        ],
+        "p95ms": [
+          64.91704800000001,
+          64.91704800000001
+        ],
+        "p99ms": [
+          288.88479,
+          288.88479
+        ],
+        "cpuMsPerReq": [
+          0.125532729578564,
+          0.125532729578564
+        ],
+        "cpuUtilization": [
+          0.7274529850067886,
+          0.7274529850067886
+        ],
+        "peakRssMb": [
+          80.86328125,
+          80.86328125
+        ],
+        "cgroupPeakMb": [
+          76.53515625,
+          76.53515625
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 6133.202831067958,
+      "p50ms": 32.998418,
+      "p95ms": 64.91704800000001,
+      "p99ms": 288.88479,
+      "cpuMsPerReq": 0.125532729578564,
+      "cpuUtilization": 0.7274529850067886,
+      "peakRssMb": 80.86328125,
+      "cgroupPeakMb": 76.53515625,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "rust",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          7259.51488854485,
+          7259.51488854485
+        ],
+        "p50ms": [
+          28.216644,
+          28.216644
+        ],
+        "p95ms": [
+          39.159436,
+          39.159436
+        ],
+        "p99ms": [
+          284.727722,
+          284.727722
+        ],
+        "cpuMsPerReq": [
+          0.08337417236737273,
+          0.08337417236737273
+        ],
+        "cpuUtilization": [
+          0.5643874032532343,
+          0.5643874032532343
+        ],
+        "peakRssMb": [
+          29.953125,
+          29.953125
+        ],
+        "cgroupPeakMb": [
+          35.453125,
+          35.453125
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 7259.51488854485,
+      "p50ms": 28.216644,
+      "p95ms": 39.159436,
+      "p99ms": 284.727722,
+      "cpuMsPerReq": 0.08337417236737273,
+      "cpuUtilization": 0.5643874032532343,
+      "peakRssMb": 29.953125,
+      "cgroupPeakMb": 35.453125,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts",
+      "phase": "fixed",
+      "targetRps": 785,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          784.3949080398223,
+          784.3949080398223
+        ],
+        "p50ms": [
+          1.880035,
+          1.880035
+        ],
+        "p95ms": [
+          4.702607,
+          4.702607
+        ],
+        "p99ms": [
+          58.046406000000005,
+          58.046406000000005
+        ],
+        "cpuMsPerReq": [
+          0.4381772087394102,
+          0.4381772087394102
+        ],
+        "cpuUtilization": [
+          0.33850130775718124,
+          0.33850130775718124
+        ],
+        "peakRssMb": [
+          169.375,
+          169.375
+        ],
+        "cgroupPeakMb": [
+          213.6953125,
+          213.6953125
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 784.3949080398223,
+      "p50ms": 1.880035,
+      "p95ms": 4.702607,
+      "p99ms": 58.046406000000005,
+      "cpuMsPerReq": 0.4381772087394102,
+      "cpuUtilization": 0.33850130775718124,
+      "peakRssMb": 169.375,
+      "cgroupPeakMb": 213.6953125,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts-bun",
+      "phase": "fixed",
+      "targetRps": 785,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          784.76155807144,
+          784.76155807144
+        ],
+        "p50ms": [
+          1.710202,
+          1.710202
+        ],
+        "p95ms": [
+          3.299196,
+          3.299196
+        ],
+        "p99ms": [
+          22.980414,
+          22.980414
+        ],
+        "cpuMsPerReq": [
+          0.11855672335817567,
+          0.11855672335817567
+        ],
+        "cpuUtilization": [
+          0.09162869062904896,
+          0.09162869062904896
+        ],
+        "peakRssMb": [
+          60.1015625,
+          60.1015625
+        ],
+        "cgroupPeakMb": [
+          33.3671875,
+          33.3671875
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 784.76155807144,
+      "p50ms": 1.710202,
+      "p95ms": 3.299196,
+      "p99ms": 22.980414,
+      "cpuMsPerReq": 0.11855672335817567,
+      "cpuUtilization": 0.09162869062904896,
+      "peakRssMb": 60.1015625,
+      "cgroupPeakMb": 33.3671875,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "go",
+      "phase": "fixed",
+      "targetRps": 785,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          784.865509880717,
+          784.865509880717
+        ],
+        "p50ms": [
+          1.664619,
+          1.664619
+        ],
+        "p95ms": [
+          7.401889,
+          7.401889
+        ],
+        "p99ms": [
+          86.04342600000001,
+          86.04342600000001
+        ],
+        "cpuMsPerReq": [
+          0.19789146496815288,
+          0.19789146496815288
+        ],
+        "cpuUtilization": [
+          0.1528709540005357,
+          0.1528709540005357
+        ],
+        "peakRssMb": [
+          53.70703125,
+          53.70703125
+        ],
+        "cgroupPeakMb": [
+          59.578125,
+          59.578125
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 784.865509880717,
+      "p50ms": 1.664619,
+      "p95ms": 7.401889,
+      "p99ms": 86.04342600000001,
+      "cpuMsPerReq": 0.19789146496815288,
+      "cpuUtilization": 0.1528709540005357,
+      "peakRssMb": 53.70703125,
+      "cgroupPeakMb": 59.578125,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "small",
+      "lang": "rust",
+      "phase": "fixed",
+      "targetRps": 785,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          784.7004454700846,
+          784.7004454700846
+        ],
+        "p50ms": [
+          1.618786,
+          1.618786
+        ],
+        "p95ms": [
+          3.163196,
+          3.163196
+        ],
+        "p99ms": [
+          14.264822,
+          14.264822
+        ],
+        "cpuMsPerReq": [
+          0.11481789808917198,
+          0.11481789808917198
+        ],
+        "cpuUtilization": [
+          0.08878557513484178,
+          0.08878557513484178
+        ],
+        "peakRssMb": [
+          23.0078125,
+          23.0078125
+        ],
+        "cgroupPeakMb": [
+          31.51171875,
+          31.51171875
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 784.7004454700846,
+      "p50ms": 1.618786,
+      "p95ms": 3.163196,
+      "p99ms": 14.264822,
+      "cpuMsPerReq": 0.11481789808917198,
+      "cpuUtilization": 0.08878557513484178,
+      "peakRssMb": 23.0078125,
+      "cgroupPeakMb": 31.51171875,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          206.19075595980024,
+          206.19075595980024
+        ],
+        "p50ms": [
+          660.28838,
+          660.28838
+        ],
+        "p95ms": [
+          7048.1422299999995,
+          7048.1422299999995
+        ],
+        "p99ms": [
+          10573.132759,
+          10573.132759
+        ],
+        "cpuMsPerReq": [
+          4.704547640653358,
+          4.704547640653358
+        ],
+        "cpuUtilization": [
+          0.9335433284249675,
+          0.9335433284249675
+        ],
+        "peakRssMb": [
+          871.5625,
+          871.5625
+        ],
+        "cgroupPeakMb": [
+          912.11328125,
+          912.11328125
+        ],
+        "throttledMs": [
+          1468.093,
+          1468.093
+        ]
+      },
+      "rps": 206.19075595980024,
+      "p50ms": 660.28838,
+      "p95ms": 7048.1422299999995,
+      "p99ms": 10573.132759,
+      "cpuMsPerReq": 4.704547640653358,
+      "cpuUtilization": 0.9335433284249675,
+      "peakRssMb": 871.5625,
+      "cgroupPeakMb": 912.11328125,
+      "throttledMs": 1468.093
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts-bun",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          338.99783047495333,
+          338.99783047495333
+        ],
+        "p50ms": [
+          699.1285809999999,
+          699.1285809999999
+        ],
+        "p95ms": [
+          1167.036865,
+          1167.036865
+        ],
+        "p99ms": [
+          1437.8359309999998,
+          1437.8359309999998
+        ],
+        "cpuMsPerReq": [
+          2.921406330935252,
+          2.921406330935252
+        ],
+        "cpuUtilization": [
+          0.920996955951243,
+          0.920996955951243
+        ],
+        "peakRssMb": [
+          1441.81640625,
+          1441.81640625
+        ],
+        "cgroupPeakMb": [
+          1500.02734375,
+          1500.02734375
+        ],
+        "throttledMs": [
+          492.039,
+          492.039
+        ]
+      },
+      "rps": 338.99783047495333,
+      "p50ms": 699.1285809999999,
+      "p95ms": 1167.036865,
+      "p99ms": 1437.8359309999998,
+      "cpuMsPerReq": 2.921406330935252,
+      "cpuUtilization": 0.920996955951243,
+      "peakRssMb": 1441.81640625,
+      "cgroupPeakMb": 1500.02734375,
+      "throttledMs": 492.039
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "go",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          238.10701854154124,
+          238.10701854154124
+        ],
+        "p50ms": [
+          1049.385682,
+          1049.385682
+        ],
+        "p95ms": [
+          1523.233443,
+          1523.233443
+        ],
+        "p99ms": [
+          1974.571539,
+          1974.571539
+        ],
+        "cpuMsPerReq": [
+          3.5971698889345944,
+          3.5971698889345944
+        ],
+        "cpuUtilization": [
+          0.7895776714574795,
+          0.7895776714574795
+        ],
+        "peakRssMb": [
+          395.23046875,
+          395.23046875
+        ],
+        "cgroupPeakMb": [
+          389.2109375,
+          389.2109375
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 238.10701854154124,
+      "p50ms": 1049.385682,
+      "p95ms": 1523.233443,
+      "p99ms": 1974.571539,
+      "cpuMsPerReq": 3.5971698889345944,
+      "cpuUtilization": 0.7895776714574795,
+      "peakRssMb": 395.23046875,
+      "cgroupPeakMb": 389.2109375,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "rust",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          326.25920548151396,
+          326.25920548151396
+        ],
+        "p50ms": [
+          784.405781,
+          784.405781
+        ],
+        "p95ms": [
+          995.53401,
+          995.53401
+        ],
+        "p99ms": [
+          1307.417587,
+          1307.417587
+        ],
+        "cpuMsPerReq": [
+          2.4731844163658243,
+          2.4731844163658243
+        ],
+        "cpuUtilization": [
+          0.7608419268182933,
+          0.7608419268182933
+        ],
+        "peakRssMb": [
+          374.15625,
+          374.15625
+        ],
+        "cgroupPeakMb": [
+          380.23046875,
+          380.23046875
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 326.25920548151396,
+      "p50ms": 784.405781,
+      "p95ms": 995.53401,
+      "p99ms": 1307.417587,
+      "cpuMsPerReq": 2.4731844163658243,
+      "cpuUtilization": 0.7608419268182933,
+      "peakRssMb": 374.15625,
+      "cgroupPeakMb": 380.23046875,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts",
+      "phase": "fixed",
+      "targetRps": 56,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          55.98420412678588,
+          55.98420412678588
+        ],
+        "p50ms": [
+          8.434885,
+          8.434885
+        ],
+        "p95ms": [
+          14.20828,
+          14.20828
+        ],
+        "p99ms": [
+          25.100030999999998,
+          25.100030999999998
+        ],
+        "cpuMsPerReq": [
+          7.322398214285713,
+          7.322398214285713
+        ],
+        "cpuUtilization": [
+          0.4043258592399836,
+          0.4043258592399836
+        ],
+        "peakRssMb": [
+          201.98828125,
+          201.98828125
+        ],
+        "cgroupPeakMb": [
+          216.85546875,
+          216.85546875
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 55.98420412678588,
+      "p50ms": 8.434885,
+      "p95ms": 14.20828,
+      "p99ms": 25.100030999999998,
+      "cpuMsPerReq": 7.322398214285713,
+      "cpuUtilization": 0.4043258592399836,
+      "peakRssMb": 201.98828125,
+      "cgroupPeakMb": 216.85546875,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts-bun",
+      "phase": "fixed",
+      "targetRps": 56,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          55.985416314116,
+          55.985416314116
+        ],
+        "p50ms": [
+          8.43401,
+          8.43401
+        ],
+        "p95ms": [
+          10.783835,
+          10.783835
+        ],
+        "p99ms": [
+          15.561817,
+          15.561817
+        ],
+        "cpuMsPerReq": [
+          3.8509392857142855,
+          3.8509392857142855
+        ],
+        "cpuUtilization": [
+          0.21258862132014145,
+          0.21258862132014145
+        ],
+        "peakRssMb": [
+          79.23046875,
+          79.23046875
+        ],
+        "cgroupPeakMb": [
+          133.6015625,
+          133.6015625
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 55.985416314116,
+      "p50ms": 8.43401,
+      "p95ms": 10.783835,
+      "p99ms": 15.561817,
+      "cpuMsPerReq": 3.8509392857142855,
+      "cpuUtilization": 0.21258862132014145,
+      "peakRssMb": 79.23046875,
+      "cgroupPeakMb": 133.6015625,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "go",
+      "phase": "fixed",
+      "targetRps": 56,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          55.97127355543114,
+          55.97127355543114
+        ],
+        "p50ms": [
+          8.330841,
+          8.330841
+        ],
+        "p95ms": [
+          11.532286,
+          11.532286
+        ],
+        "p99ms": [
+          15.788602,
+          15.788602
+        ],
+        "cpuMsPerReq": [
+          4.393826785714286,
+          4.393826785714286
+        ],
+        "cpuUtilization": [
+          0.24317518784751152,
+          0.24317518784751152
+        ],
+        "peakRssMb": [
+          37.921875,
+          37.921875
+        ],
+        "cgroupPeakMb": [
+          44.33203125,
+          44.33203125
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 55.97127355543114,
+      "p50ms": 8.330841,
+      "p95ms": 11.532286,
+      "p99ms": 15.788602,
+      "cpuMsPerReq": 4.393826785714286,
+      "cpuUtilization": 0.24317518784751152,
+      "peakRssMb": 37.921875,
+      "cgroupPeakMb": 44.33203125,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "large",
+      "lang": "rust",
+      "phase": "fixed",
+      "targetRps": 56,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          55.984000998564234,
+          55.984000998564234
+        ],
+        "p50ms": [
+          8.276341,
+          8.276341
+        ],
+        "p95ms": [
+          11.559911000000001,
+          11.559911000000001
+        ],
+        "p99ms": [
+          18.286299999999997,
+          18.286299999999997
+        ],
+        "cpuMsPerReq": [
+          3.55201875,
+          3.55201875
+        ],
+        "cpuUtilization": [
+          0.19656715734554622,
+          0.19656715734554622
+        ],
+        "peakRssMb": [
+          24.87109375,
+          24.87109375
+        ],
+        "cgroupPeakMb": [
+          32.3671875,
+          32.3671875
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 55.984000998564234,
+      "p50ms": 8.276341,
+      "p95ms": 11.559911000000001,
+      "p99ms": 18.286299999999997,
+      "cpuMsPerReq": 3.55201875,
+      "cpuUtilization": 0.19656715734554622,
+      "peakRssMb": 24.87109375,
+      "cgroupPeakMb": 32.3671875,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          59.10730294868431,
+          59.10730294868431
+        ],
+        "p50ms": [
+          1949.992955,
+          1949.992955
+        ],
+        "p95ms": [
+          12046.589721,
+          12046.589721
+        ],
+        "p99ms": [
+          12588.932526,
+          12588.932526
+        ],
+        "cpuMsPerReq": [
+          16.897634048257373,
+          16.897634048257373
+        ],
+        "cpuUtilization": [
+          0.9586931917507666,
+          0.9586931917507666
+        ],
+        "peakRssMb": [
+          565.26171875,
+          565.26171875
+        ],
+        "cgroupPeakMb": [
+          601.84375,
+          601.84375
+        ],
+        "throttledMs": [
+          8938.343,
+          8938.343
+        ]
+      },
+      "rps": 59.10730294868431,
+      "p50ms": 1949.992955,
+      "p95ms": 12046.589721,
+      "p99ms": 12588.932526,
+      "cpuMsPerReq": 16.897634048257373,
+      "cpuUtilization": 0.9586931917507666,
+      "peakRssMb": 565.26171875,
+      "cgroupPeakMb": 601.84375,
+      "throttledMs": 8938.343
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts-bun",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          112.65305315337787,
+          112.65305315337787
+        ],
+        "p50ms": [
+          2191.719137,
+          2191.719137
+        ],
+        "p95ms": [
+          2638.4445410000003,
+          2638.4445410000003
+        ],
+        "p99ms": [
+          2680.3847579999997,
+          2680.3847579999997
+        ],
+        "cpuMsPerReq": [
+          5.377766037735849,
+          5.377766037735849
+        ],
+        "cpuUtilization": [
+          0.5814773710238117,
+          0.5814773710238117
+        ],
+        "peakRssMb": [
+          555.4765625,
+          555.4765625
+        ],
+        "cgroupPeakMb": [
+          620.78125,
+          620.78125
+        ],
+        "throttledMs": [
+          280.271,
+          280.271
+        ]
+      },
+      "rps": 112.65305315337787,
+      "p50ms": 2191.719137,
+      "p95ms": 2638.4445410000003,
+      "p99ms": 2680.3847579999997,
+      "cpuMsPerReq": 5.377766037735849,
+      "cpuUtilization": 0.5814773710238117,
+      "peakRssMb": 555.4765625,
+      "cgroupPeakMb": 620.78125,
+      "throttledMs": 280.271
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "go",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          104.76294019491169,
+          104.76294019491169
+        ],
+        "p50ms": [
+          2319.345035,
+          2319.345035
+        ],
+        "p95ms": [
+          3600.392414,
+          3600.392414
+        ],
+        "p99ms": [
+          4133.981100999999,
+          4133.981100999999
+        ],
+        "cpuMsPerReq": [
+          8.108531879194631,
+          8.108531879194631
+        ],
+        "cpuUtilization": [
+          0.8019977567740952,
+          0.8019977567740952
+        ],
+        "peakRssMb": [
+          1259.53125,
+          1259.53125
+        ],
+        "cgroupPeakMb": [
+          1277.44921875,
+          1277.44921875
+        ],
+        "throttledMs": [
+          2.362,
+          2.362
+        ]
+      },
+      "rps": 104.76294019491169,
+      "p50ms": 2319.345035,
+      "p95ms": 3600.392414,
+      "p99ms": 4133.981100999999,
+      "cpuMsPerReq": 8.108531879194631,
+      "cpuUtilization": 0.8019977567740952,
+      "peakRssMb": 1259.53125,
+      "cgroupPeakMb": 1277.44921875,
+      "throttledMs": 2.362
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "rust",
+      "phase": "max",
+      "targetRps": null,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          114.89970272876855,
+          114.89970272876855
+        ],
+        "p50ms": [
+          2112.668365,
+          2112.668365
+        ],
+        "p95ms": [
+          4062.8476960000003,
+          4062.8476960000003
+        ],
+        "p99ms": [
+          4794.139851,
+          4794.139851
+        ],
+        "cpuMsPerReq": [
+          6.522514693534844,
+          6.522514693534844
+        ],
+        "cpuUtilization": [
+          0.7114235507641148,
+          0.7114235507641148
+        ],
+        "peakRssMb": [
+          765.8828125,
+          765.8828125
+        ],
+        "cgroupPeakMb": [
+          774.74609375,
+          774.74609375
+        ],
+        "throttledMs": [
+          735.198,
+          735.198
+        ]
+      },
+      "rps": 114.89970272876855,
+      "p50ms": 2112.668365,
+      "p95ms": 4062.8476960000003,
+      "p99ms": 4794.139851,
+      "cpuMsPerReq": 6.522514693534844,
+      "cpuUtilization": 0.7114235507641148,
+      "peakRssMb": 765.8828125,
+      "cgroupPeakMb": 774.74609375,
+      "throttledMs": 735.198
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts",
+      "phase": "fixed",
+      "targetRps": 18,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          17.994888789371913,
+          17.994888789371913
+        ],
+        "p50ms": [
+          19.119428,
+          19.119428
+        ],
+        "p95ms": [
+          29.491388999999998,
+          29.491388999999998
+        ],
+        "p99ms": [
+          75.562674,
+          75.562674
+        ],
+        "cpuMsPerReq": [
+          22.15463611111111,
+          22.15463611111111
+        ],
+        "cpuUtilization": [
+          0.39257027138670014,
+          0.39257027138670014
+        ],
+        "peakRssMb": [
+          164.83203125,
+          164.83203125
+        ],
+        "cgroupPeakMb": [
+          115.60546875,
+          115.60546875
+        ],
+        "throttledMs": [
+          40.969,
+          40.969
+        ]
+      },
+      "rps": 17.994888789371913,
+      "p50ms": 19.119428,
+      "p95ms": 29.491388999999998,
+      "p99ms": 75.562674,
+      "cpuMsPerReq": 22.15463611111111,
+      "cpuUtilization": 0.39257027138670014,
+      "peakRssMb": 164.83203125,
+      "cgroupPeakMb": 115.60546875,
+      "throttledMs": 40.969
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts-bun",
+      "phase": "fixed",
+      "targetRps": 18,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          17.993589620855584,
+          17.993589620855584
+        ],
+        "p50ms": [
+          18.096414000000003,
+          18.096414000000003
+        ],
+        "p95ms": [
+          24.649924,
+          24.649924
+        ],
+        "p99ms": [
+          28.911196,
+          28.911196
+        ],
+        "cpuMsPerReq": [
+          9.508827777777778,
+          9.508827777777778
+        ],
+        "cpuUtilization": [
+          0.1682086189481471,
+          0.1682086189481471
+        ],
+        "peakRssMb": [
+          69.44140625,
+          69.44140625
+        ],
+        "cgroupPeakMb": [
+          44.75390625,
+          44.75390625
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 17.993589620855584,
+      "p50ms": 18.096414000000003,
+      "p95ms": 24.649924,
+      "p99ms": 28.911196,
+      "cpuMsPerReq": 9.508827777777778,
+      "cpuUtilization": 0.1682086189481471,
+      "peakRssMb": 69.44140625,
+      "cgroupPeakMb": 44.75390625,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "go",
+      "phase": "fixed",
+      "targetRps": 18,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          17.99076335498961,
+          17.99076335498961
+        ],
+        "p50ms": [
+          19.187158999999998,
+          19.187158999999998
+        ],
+        "p95ms": [
+          27.201287,
+          27.201287
+        ],
+        "p99ms": [
+          39.214063,
+          39.214063
+        ],
+        "cpuMsPerReq": [
+          13.450405555555555,
+          13.450405555555555
+        ],
+        "cpuUtilization": [
+          0.23845690141054224,
+          0.23845690141054224
+        ],
+        "peakRssMb": [
+          34.546875,
+          34.546875
+        ],
+        "cgroupPeakMb": [
+          43.2734375,
+          43.2734375
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 17.99076335498961,
+      "p50ms": 19.187158999999998,
+      "p95ms": 27.201287,
+      "p99ms": 39.214063,
+      "cpuMsPerReq": 13.450405555555555,
+      "cpuUtilization": 0.23845690141054224,
+      "peakRssMb": 34.546875,
+      "cgroupPeakMb": 43.2734375,
+      "throttledMs": 0
+    },
+    {
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "rust",
+      "phase": "fixed",
+      "targetRps": 18,
+      "runs": 1,
+      "failedRequests": 0,
+      "spread": {
+        "rps": [
+          17.991491746189812,
+          17.991491746189812
+        ],
+        "p50ms": [
+          18.792952000000003,
+          18.792952000000003
+        ],
+        "p95ms": [
+          26.156417,
+          26.156417
+        ],
+        "p99ms": [
+          31.022685000000003,
+          31.022685000000003
+        ],
+        "cpuMsPerReq": [
+          10.420397222222222,
+          10.420397222222222
+        ],
+        "cpuUtilization": [
+          0.18499460994080874,
+          0.18499460994080874
+        ],
+        "peakRssMb": [
+          37.546875,
+          37.546875
+        ],
+        "cgroupPeakMb": [
+          42.5234375,
+          42.5234375
+        ],
+        "throttledMs": [
+          0,
+          0
+        ]
+      },
+      "rps": 17.991491746189812,
+      "p50ms": 18.792952000000003,
+      "p95ms": 26.156417,
+      "p99ms": 31.022685000000003,
+      "cpuMsPerReq": 10.420397222222222,
+      "cpuUtilization": 0.18499460994080874,
+      "peakRssMb": 37.546875,
+      "cgroupPeakMb": 42.5234375,
+      "throttledMs": 0
+    }
+  ],
+  "runs": [
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "rust",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 7259.51488854485,
+      "requests": 72798,
+      "ok": 72798,
+      "non200": {},
+      "errors": {},
+      "p50ms": 28.216644,
+      "p95ms": 39.159436,
+      "p99ms": 284.727722,
+      "cpuMsPerReq": 0.08337417236737273,
+      "cpuUtilization": 0.5643874032532343,
+      "userMsPerReq": 0.061764457814775124,
+      "systemMsPerReq": 0.021609728289238714,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 29.953125,
+      "rssMb": 29.953125,
+      "cgroupPeakMb": 35.453125,
+      "threads": 2
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 3295.817163725131,
+      "requests": 33127,
+      "ok": 33127,
+      "non200": {},
+      "errors": {},
+      "p50ms": 68.005536,
+      "p95ms": 106.31885000000001,
+      "p99ms": 291.80102800000003,
+      "cpuMsPerReq": 0.28701669333172336,
+      "cpuUtilization": 0.8994455540555955,
+      "userMsPerReq": 0.26076719896157213,
+      "systemMsPerReq": 0.026249494370151238,
+      "nrThrottled": 88,
+      "throttledMs": 2752.923,
+      "peakRssMb": 208.30078125,
+      "rssMb": 207.0859375,
+      "cgroupPeakMb": 252.10546875,
+      "threads": 11
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "go",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 6133.202831067958,
+      "requests": 61504,
+      "ok": 61504,
+      "non200": {},
+      "errors": {},
+      "p50ms": 32.998418,
+      "p95ms": 64.91704800000001,
+      "p99ms": 288.88479,
+      "cpuMsPerReq": 0.125532729578564,
+      "cpuUtilization": 0.7274529850067886,
+      "userMsPerReq": 0.10099378902185224,
+      "systemMsPerReq": 0.02453894055671176,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 80.86328125,
+      "rssMb": 75.921875,
+      "cgroupPeakMb": 76.53515625,
+      "threads": 6
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts-bun",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 7270.136177663706,
+      "requests": 72891,
+      "ok": 72891,
+      "non200": {},
+      "errors": {},
+      "p50ms": 28.522101000000003,
+      "p95ms": 43.619628,
+      "p99ms": 285.783426,
+      "cpuMsPerReq": 0.09230937975881796,
+      "cpuUtilization": 0.6274103926210972,
+      "userMsPerReq": 0.06594247575146452,
+      "systemMsPerReq": 0.026366890288238604,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 68.91796875,
+      "rssMb": 50.82421875,
+      "cgroupPeakMb": 123.38671875,
+      "threads": 6
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts-bun",
+      "phase": "fixed",
+      "targetRps": 785,
+      "rps": 784.76155807144,
+      "requests": 15699,
+      "ok": 15699,
+      "non200": {},
+      "errors": {},
+      "p50ms": 1.710202,
+      "p95ms": 3.299196,
+      "p99ms": 22.980414,
+      "cpuMsPerReq": 0.11855672335817567,
+      "cpuUtilization": 0.09162869062904896,
+      "userMsPerReq": 0.07651181603923818,
+      "systemMsPerReq": 0.04204497101726224,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 60.1015625,
+      "rssMb": 47.875,
+      "cgroupPeakMb": 33.3671875,
+      "threads": 6
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "rust",
+      "phase": "fixed",
+      "targetRps": 785,
+      "rps": 784.7004454700846,
+      "requests": 15700,
+      "ok": 15700,
+      "non200": {},
+      "errors": {},
+      "p50ms": 1.618786,
+      "p95ms": 3.163196,
+      "p99ms": 14.264822,
+      "cpuMsPerReq": 0.11481789808917198,
+      "cpuUtilization": 0.08878557513484178,
+      "userMsPerReq": 0.08045726114649682,
+      "systemMsPerReq": 0.03436070063694267,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 23.0078125,
+      "rssMb": 23.0078125,
+      "cgroupPeakMb": 31.51171875,
+      "threads": 2
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "go",
+      "phase": "fixed",
+      "targetRps": 785,
+      "rps": 784.865509880717,
+      "requests": 15700,
+      "ok": 15700,
+      "non200": {},
+      "errors": {},
+      "p50ms": 1.664619,
+      "p95ms": 7.401889,
+      "p99ms": 86.04342600000001,
+      "cpuMsPerReq": 0.19789146496815288,
+      "cpuUtilization": 0.1528709540005357,
+      "userMsPerReq": 0.15287369426751593,
+      "systemMsPerReq": 0.04501770700636943,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 53.70703125,
+      "rssMb": 52.40234375,
+      "cgroupPeakMb": 59.578125,
+      "threads": 6
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "small",
+      "lang": "ts",
+      "phase": "fixed",
+      "targetRps": 785,
+      "rps": 784.3949080398223,
+      "requests": 15699,
+      "ok": 15699,
+      "non200": {},
+      "errors": {},
+      "p50ms": 1.880035,
+      "p95ms": 4.702607,
+      "p99ms": 58.046406000000005,
+      "cpuMsPerReq": 0.4381772087394102,
+      "cpuUtilization": 0.33850130775718124,
+      "userMsPerReq": 0.3977439327345691,
+      "systemMsPerReq": 0.04043333970316581,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 169.375,
+      "rssMb": 169.05078125,
+      "cgroupPeakMb": 213.6953125,
+      "threads": 11
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts-bun",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 338.99783047495333,
+      "requests": 3475,
+      "ok": 3475,
+      "non200": {},
+      "errors": {},
+      "p50ms": 699.1285809999999,
+      "p95ms": 1167.036865,
+      "p99ms": 1437.8359309999998,
+      "cpuMsPerReq": 2.921406330935252,
+      "cpuUtilization": 0.920996955951243,
+      "userMsPerReq": 2.2863375539568347,
+      "systemMsPerReq": 0.6350687769784172,
+      "nrThrottled": 76,
+      "throttledMs": 492.039,
+      "peakRssMb": 1441.81640625,
+      "rssMb": 879.76953125,
+      "cgroupPeakMb": 1500.02734375,
+      "threads": 8
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "go",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 238.10701854154124,
+      "requests": 2431,
+      "ok": 2431,
+      "non200": {},
+      "errors": {},
+      "p50ms": 1049.385682,
+      "p95ms": 1523.233443,
+      "p99ms": 1974.571539,
+      "cpuMsPerReq": 3.5971698889345944,
+      "cpuUtilization": 0.7895776714574795,
+      "userMsPerReq": 3.369090086384204,
+      "systemMsPerReq": 0.2280798025503908,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 395.23046875,
+      "rssMb": 113.796875,
+      "cgroupPeakMb": 389.2109375,
+      "threads": 7
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "rust",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 326.25920548151396,
+      "requests": 3324,
+      "ok": 3324,
+      "non200": {},
+      "errors": {},
+      "p50ms": 784.405781,
+      "p95ms": 995.53401,
+      "p99ms": 1307.417587,
+      "cpuMsPerReq": 2.4731844163658243,
+      "cpuUtilization": 0.7608419268182933,
+      "userMsPerReq": 2.1693146811070996,
+      "systemMsPerReq": 0.30387003610108304,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 374.15625,
+      "rssMb": 153.1015625,
+      "cgroupPeakMb": 380.23046875,
+      "threads": 2
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 206.19075595980024,
+      "requests": 2204,
+      "ok": 2204,
+      "non200": {},
+      "errors": {},
+      "p50ms": 660.28838,
+      "p95ms": 7048.1422299999995,
+      "p99ms": 10573.132759,
+      "cpuMsPerReq": 4.704547640653358,
+      "cpuUtilization": 0.9335433284249675,
+      "userMsPerReq": 4.290791742286752,
+      "systemMsPerReq": 0.4137558983666062,
+      "nrThrottled": 73,
+      "throttledMs": 1468.093,
+      "peakRssMb": 871.5625,
+      "rssMb": 596.44921875,
+      "cgroupPeakMb": 912.11328125,
+      "threads": 11
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "rust",
+      "phase": "fixed",
+      "targetRps": 56,
+      "rps": 55.984000998564234,
+      "requests": 1120,
+      "ok": 1120,
+      "non200": {},
+      "errors": {},
+      "p50ms": 8.276341,
+      "p95ms": 11.559911000000001,
+      "p99ms": 18.286299999999997,
+      "cpuMsPerReq": 3.55201875,
+      "cpuUtilization": 0.19656715734554622,
+      "userMsPerReq": 3.0342330357142857,
+      "systemMsPerReq": 0.5177866071428572,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 24.87109375,
+      "rssMb": 15.33984375,
+      "cgroupPeakMb": 32.3671875,
+      "threads": 3
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "go",
+      "phase": "fixed",
+      "targetRps": 56,
+      "rps": 55.97127355543114,
+      "requests": 1120,
+      "ok": 1120,
+      "non200": {},
+      "errors": {},
+      "p50ms": 8.330841,
+      "p95ms": 11.532286,
+      "p99ms": 15.788602,
+      "cpuMsPerReq": 4.393826785714286,
+      "cpuUtilization": 0.24317518784751152,
+      "userMsPerReq": 4.1795035714285715,
+      "systemMsPerReq": 0.21432410714285716,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 37.921875,
+      "rssMb": 37.921875,
+      "cgroupPeakMb": 44.33203125,
+      "threads": 6
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts-bun",
+      "phase": "fixed",
+      "targetRps": 56,
+      "rps": 55.985416314116,
+      "requests": 1120,
+      "ok": 1120,
+      "non200": {},
+      "errors": {},
+      "p50ms": 8.43401,
+      "p95ms": 10.783835,
+      "p99ms": 15.561817,
+      "cpuMsPerReq": 3.8509392857142855,
+      "cpuUtilization": 0.21258862132014145,
+      "userMsPerReq": 3.5616830357142857,
+      "systemMsPerReq": 0.28925625,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 79.23046875,
+      "rssMb": 63.4765625,
+      "cgroupPeakMb": 133.6015625,
+      "threads": 7
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "large",
+      "lang": "ts",
+      "phase": "fixed",
+      "targetRps": 56,
+      "rps": 55.98420412678588,
+      "requests": 1120,
+      "ok": 1120,
+      "non200": {},
+      "errors": {},
+      "p50ms": 8.434885,
+      "p95ms": 14.20828,
+      "p99ms": 25.100030999999998,
+      "cpuMsPerReq": 7.322398214285713,
+      "cpuUtilization": 0.4043258592399836,
+      "userMsPerReq": 6.934865178571428,
+      "systemMsPerReq": 0.3875330357142857,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 201.98828125,
+      "rssMb": 192.30859375,
+      "cgroupPeakMb": 216.85546875,
+      "threads": 11
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "go",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 104.76294019491169,
+      "requests": 1192,
+      "ok": 1192,
+      "non200": {},
+      "errors": {},
+      "p50ms": 2319.345035,
+      "p95ms": 3600.392414,
+      "p99ms": 4133.981100999999,
+      "cpuMsPerReq": 8.108531879194631,
+      "cpuUtilization": 0.8019977567740952,
+      "userMsPerReq": 7.273857382550336,
+      "systemMsPerReq": 0.8346753355704698,
+      "nrThrottled": 7,
+      "throttledMs": 2.362,
+      "peakRssMb": 1259.53125,
+      "rssMb": 1058.54296875,
+      "cgroupPeakMb": 1277.44921875,
+      "threads": 6
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "rust",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 114.89970272876855,
+      "requests": 1191,
+      "ok": 1191,
+      "non200": {},
+      "errors": {},
+      "p50ms": 2112.668365,
+      "p95ms": 4062.8476960000003,
+      "p99ms": 4794.139851,
+      "cpuMsPerReq": 6.522514693534844,
+      "cpuUtilization": 0.7114235507641148,
+      "userMsPerReq": 5.585505457598657,
+      "systemMsPerReq": 0.9370092359361881,
+      "nrThrottled": 18,
+      "throttledMs": 735.198,
+      "peakRssMb": 765.8828125,
+      "rssMb": 765.8828125,
+      "cgroupPeakMb": 774.74609375,
+      "threads": 95
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 59.10730294868431,
+      "requests": 746,
+      "ok": 746,
+      "non200": {},
+      "errors": {},
+      "p50ms": 1949.992955,
+      "p95ms": 12046.589721,
+      "p99ms": 12588.932526,
+      "cpuMsPerReq": 16.897634048257373,
+      "cpuUtilization": 0.9586931917507666,
+      "userMsPerReq": 16.14608981233244,
+      "systemMsPerReq": 0.7515428954423592,
+      "nrThrottled": 124,
+      "throttledMs": 8938.343,
+      "peakRssMb": 565.26171875,
+      "rssMb": 565.26171875,
+      "cgroupPeakMb": 601.84375,
+      "threads": 11
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts-bun",
+      "phase": "max",
+      "targetRps": null,
+      "rps": 112.65305315337787,
+      "requests": 1325,
+      "ok": 1325,
+      "non200": {},
+      "errors": {},
+      "p50ms": 2191.719137,
+      "p95ms": 2638.4445410000003,
+      "p99ms": 2680.3847579999997,
+      "cpuMsPerReq": 5.377766037735849,
+      "cpuUtilization": 0.5814773710238117,
+      "userMsPerReq": 4.468086037735849,
+      "systemMsPerReq": 0.90968,
+      "nrThrottled": 9,
+      "throttledMs": 280.271,
+      "peakRssMb": 555.4765625,
+      "rssMb": 329.375,
+      "cgroupPeakMb": 620.78125,
+      "threads": 7
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts",
+      "phase": "fixed",
+      "targetRps": 18,
+      "rps": 17.994888789371913,
+      "requests": 360,
+      "ok": 360,
+      "non200": {},
+      "errors": {},
+      "p50ms": 19.119428,
+      "p95ms": 29.491388999999998,
+      "p99ms": 75.562674,
+      "cpuMsPerReq": 22.15463611111111,
+      "cpuUtilization": 0.39257027138670014,
+      "userMsPerReq": 21.177311111111113,
+      "systemMsPerReq": 0.977325,
+      "nrThrottled": 1,
+      "throttledMs": 40.969,
+      "peakRssMb": 164.83203125,
+      "rssMb": 164.83203125,
+      "cgroupPeakMb": 115.60546875,
+      "threads": 11
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "ts-bun",
+      "phase": "fixed",
+      "targetRps": 18,
+      "rps": 17.993589620855584,
+      "requests": 360,
+      "ok": 360,
+      "non200": {},
+      "errors": {},
+      "p50ms": 18.096414000000003,
+      "p95ms": 24.649924,
+      "p99ms": 28.911196,
+      "cpuMsPerReq": 9.508827777777778,
+      "cpuUtilization": 0.1682086189481471,
+      "userMsPerReq": 7.247141666666667,
+      "systemMsPerReq": 2.2616833333333335,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 69.44140625,
+      "rssMb": 65.53515625,
+      "cgroupPeakMb": 44.75390625,
+      "threads": 7
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "rust",
+      "phase": "fixed",
+      "targetRps": 18,
+      "rps": 17.991491746189812,
+      "requests": 360,
+      "ok": 360,
+      "non200": {},
+      "errors": {},
+      "p50ms": 18.792952000000003,
+      "p95ms": 26.156417,
+      "p99ms": 31.022685000000003,
+      "cpuMsPerReq": 10.420397222222222,
+      "cpuUtilization": 0.18499460994080874,
+      "userMsPerReq": 8.685883333333333,
+      "systemMsPerReq": 1.7345138888888887,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 37.546875,
+      "rssMb": 37.546875,
+      "cgroupPeakMb": 42.5234375,
+      "threads": 2
+    },
+    {
+      "rep": 1,
+      "mode": "real",
+      "scenario": "batch",
+      "lang": "go",
+      "phase": "fixed",
+      "targetRps": 18,
+      "rps": 17.99076335498961,
+      "requests": 360,
+      "ok": 360,
+      "non200": {},
+      "errors": {},
+      "p50ms": 19.187158999999998,
+      "p95ms": 27.201287,
+      "p99ms": 39.214063,
+      "cpuMsPerReq": 13.450405555555555,
+      "cpuUtilization": 0.23845690141054224,
+      "userMsPerReq": 11.88135,
+      "systemMsPerReq": 1.5690583333333332,
+      "nrThrottled": 0,
+      "throttledMs": 0,
+      "peakRssMb": 34.546875,
+      "rssMb": 34.546875,
+      "cgroupPeakMb": 43.2734375,
+      "threads": 6
+    }
+  ]
+}

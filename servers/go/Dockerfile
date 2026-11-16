@@ -11,5 +11,9 @@ FROM debian:bookworm-slim
 COPY --from=build /out/email-api /usr/local/bin/email-api
 # Go's default is max(2, CPU limit); on a 1-vCPU task that causes CFS throttling and p99 spikes.
 ENV GOMAXPROCS=1
+# Profiling showed ~17% of CPU in runtime.copystack: every request goroutine starts with a small
+# stack and grows it through the AWS SDK's deep middleware chain. Adaptive stack start sizes new
+# goroutines from the observed average, so they don't have to grow.
+ENV GODEBUG=adaptivestackstart=1
 EXPOSE 8080
 CMD ["/usr/local/bin/email-api"]

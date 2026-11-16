@@ -195,7 +195,12 @@ async fn handle(app: &App, req: Request) -> Result<Vec<u8>, HttpError> {
         .map(str::to_string);
     let bytes: Bytes = axum::body::to_bytes(req.into_body(), MAX_BYTES).await.map_err(|_| too_large())?;
     // JSON.parse sees a JS string: invalid UTF-8 becomes U+FFFD (borrowed, no copy, when valid).
-    let body = String::from_utf8_lossy(&bytes);
+    // str::from_utf8 has a fast ASCII path; from_utf8_lossy's chunk iterator is only needed
+    // when the body is actually invalid.
+    let body: std::borrow::Cow<str> = match std::str::from_utf8(&bytes) {
+        Ok(s) => std::borrow::Cow::Borrowed(s),
+        Err(_) => String::from_utf8_lossy(&bytes),
+    };
 
     if is_single {
         send_one(app, &api_key, &bytes, &body, idem_key.as_deref()).await

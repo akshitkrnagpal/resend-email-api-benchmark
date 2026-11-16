@@ -1,0 +1,4 @@
+
+##### D production-like — 10:32:56
+config {"LABEL":"prodlike","DURATION":300,"MIX":{"small":300,"large":10,"batch":3},"BURSTS":[{"scenario":"large","rate":60,"seconds":15,"every":60}],"LAT":{"s3":[40,20],"pg":[2,1],"redis":[1,0]},"CONNECTIONS":"512","REPEATS":3,"LANGS":["ts","ts-bun","go","rust"],"SEED":"20261116","cpus":1,"memory":"2g"}
+order #1: ts ts-bun go rust

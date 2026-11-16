@@ -56,6 +56,10 @@ func newRealDeps(ctx context.Context, cfg config) (*realDeps, error) {
 	if err != nil {
 		return nil, err
 	}
+	// go-redis defaults to 10 connections per GOMAXPROCS. Every request makes ~3 Redis round trips,
+	// so with any network latency a 10-connection pool queues requests; the Node, Bun and Rust
+	// clients multiplex one connection and never wait for one.
+	ropts.PoolSize = 128
 	pcfg, err := pgxpool.ParseConfig(cfg.databaseURL)
 	if err != nil {
 		return nil, err

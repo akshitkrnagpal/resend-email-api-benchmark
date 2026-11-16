@@ -1,0 +1,5 @@
+config {"DURATION":180,"MIX":{"small":300,"large":15,"batch":3},"S3_LATENCY":50,"S3_JITTER":20,"REPEATS":3,"cpus":1,"memory":"2g"}
+ts      rep 1: peak 196 MB, steady 165 MB, end 172 MB, cpu 34%, failed {"small":0,"large":0,"batch":0}, p99 {"small":94,"large":105,"batch":120}
+ts-bun  rep 1: peak 176 MB, steady 143 MB, end 123 MB, cpu 27%, failed {"small":0,"large":0,"batch":0}, p99 {"small":97,"large":108,"batch":125}
+go      rep 1: peak 59 MB, steady 53 MB, end 53 MB, cpu 20%, failed {"small":0,"large":0,"batch":0}, p99 {"small":89,"large":96,"batch":122}
+rust    rep 1: peak 52 MB, steady 50 MB, end 44 MB, cpu 17%, failed {"small":0,"large":0,"batch":0}, p99 {"small":85,"large":96,"batch":118}

@@ -1,0 +1,921 @@
+{
+  "config": {
+    "LABEL": "v3/capacity",
+    "STEP": 25,
+    "SLO_P99_MS": 500,
+    "BISECT": 3,
+    "K_MAX": 16,
+    "MIX": {
+      "small": 300,
+      "large": 10,
+      "batch": 3
+    },
+    "LAT": {
+      "s3": [
+        40,
+        20
+      ],
+      "pg": [
+        2,
+        1
+      ],
+      "redis": [
+        1,
+        0
+      ]
+    },
+    "LANGS": [
+      "ts",
+      "ts-bun",
+      "go",
+      "rust"
+    ],
+    "SEED": "7",
+    "cpus": 1,
+    "memory": "2g"
+  },
+  "results": [
+    {
+      "lang": "rust",
+      "k": 3.75,
+      "steps": [
+        {
+          "k": 1,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.15630424898087175,
+          "rssMb": 57.4296875,
+          "classes": {
+            "small": {
+              "target": 300,
+              "achieved": 300,
+              "p50ms": 55.564128999999994,
+              "p99ms": 92.73908899999999,
+              "failed": 0,
+              "requests": 7500
+            },
+            "large": {
+              "target": 10,
+              "achieved": 10,
+              "p50ms": 64.585859,
+              "p99ms": 94.781001,
+              "failed": 0,
+              "requests": 250
+            },
+            "batch": {
+              "target": 3,
+              "achieved": 3,
+              "p50ms": 82.240946,
+              "p99ms": 124.419854,
+              "failed": 0,
+              "requests": 75
+            }
+          }
+        },
+        {
+          "k": 2,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.1820493836671803,
+          "rssMb": 68.390625,
+          "classes": {
+            "small": {
+              "target": 600,
+              "achieved": 600,
+              "p50ms": 54.11134,
+              "p99ms": 110.432051,
+              "failed": 0,
+              "requests": 15000
+            },
+            "large": {
+              "target": 20,
+              "achieved": 20,
+              "p50ms": 59.789203,
+              "p99ms": 108.388014,
+              "failed": 0,
+              "requests": 500
+            },
+            "batch": {
+              "target": 6,
+              "achieved": 6,
+              "p50ms": 77.554498,
+              "p99ms": 124.898519,
+              "failed": 0,
+              "requests": 150
+            }
+          }
+        },
+        {
+          "k": 4,
+          "pass": false,
+          "reason": "small p99 1124 ms, large p99 1467 ms, batch p99 1490 ms",
+          "cpuUtilization": 0.4131091778202677,
+          "rssMb": 153.80859375,
+          "classes": {
+            "small": {
+              "target": 1200,
+              "achieved": 1200,
+              "p50ms": 61.543116000000005,
+              "p99ms": 1123.7250889999998,
+              "failed": 0,
+              "requests": 30000
+            },
+            "large": {
+              "target": 40,
+              "achieved": 40,
+              "p50ms": 66.025773,
+              "p99ms": 1466.709395,
+              "failed": 0,
+              "requests": 1000
+            },
+            "batch": {
+              "target": 12,
+              "achieved": 12,
+              "p50ms": 78.845369,
+              "p99ms": 1489.85969,
+              "failed": 0,
+              "requests": 300
+            }
+          }
+        },
+        {
+          "k": 3,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.3483342980628232,
+          "rssMb": 152.203125,
+          "classes": {
+            "small": {
+              "target": 900,
+              "achieved": 899.96,
+              "p50ms": 57.337883999999995,
+              "p99ms": 319.22853699999996,
+              "failed": 0,
+              "requests": 22499
+            },
+            "large": {
+              "target": 30,
+              "achieved": 30,
+              "p50ms": 62.913698000000004,
+              "p99ms": 329.10948,
+              "failed": 0,
+              "requests": 750
+            },
+            "batch": {
+              "target": 9,
+              "achieved": 9,
+              "p50ms": 79.659597,
+              "p99ms": 358.008239,
+              "failed": 0,
+              "requests": 225
+            }
+          }
+        },
+        {
+          "k": 3.5,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.33843033703605413,
+          "rssMb": 159.2578125,
+          "classes": {
+            "small": {
+              "target": 1050,
+              "achieved": 1050,
+              "p50ms": 56.157642,
+              "p99ms": 396.654065,
+              "failed": 0,
+              "requests": 26250
+            },
+            "large": {
+              "target": 35,
+              "achieved": 35,
+              "p50ms": 61.327832,
+              "p99ms": 468.084114,
+              "failed": 0,
+              "requests": 875
+            },
+            "batch": {
+              "target": 11,
+              "achieved": 11,
+              "p50ms": 77.580361,
+              "p99ms": 465.59049699999997,
+              "failed": 0,
+              "requests": 275
+            }
+          }
+        },
+        {
+          "k": 3.75,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.3342523634960448,
+          "rssMb": 158.62109375,
+          "classes": {
+            "small": {
+              "target": 1125,
+              "achieved": 1124.96,
+              "p50ms": 54.690439,
+              "p99ms": 124.79440799999999,
+              "failed": 0,
+              "requests": 28124
+            },
+            "large": {
+              "target": 38,
+              "achieved": 38,
+              "p50ms": 59.952337,
+              "p99ms": 142.12464,
+              "failed": 0,
+              "requests": 950
+            },
+            "batch": {
+              "target": 11,
+              "achieved": 11,
+              "p50ms": 77.347195,
+              "p99ms": 202.59831,
+              "failed": 0,
+              "requests": 275
+            }
+          }
+        }
+      ]
+    },
+    {
+      "lang": "ts-bun",
+      "k": 4.5,
+      "steps": [
+        {
+          "k": 1,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.16664414536710234,
+          "rssMb": 58.515625,
+          "classes": {
+            "small": {
+              "target": 300,
+              "achieved": 300,
+              "p50ms": 51.88799,
+              "p99ms": 82.52876,
+              "failed": 0,
+              "requests": 7500
+            },
+            "large": {
+              "target": 10,
+              "achieved": 10,
+              "p50ms": 59.85763,
+              "p99ms": 98.25379099999999,
+              "failed": 0,
+              "requests": 250
+            },
+            "batch": {
+              "target": 3,
+              "achieved": 3,
+              "p50ms": 79.504521,
+              "p99ms": 158.30704400000002,
+              "failed": 0,
+              "requests": 75
+            }
+          }
+        },
+        {
+          "k": 2,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.17142708734128514,
+          "rssMb": 52.15625,
+          "classes": {
+            "small": {
+              "target": 600,
+              "achieved": 600,
+              "p50ms": 50.633238999999996,
+              "p99ms": 150.614104,
+              "failed": 0,
+              "requests": 15000
+            },
+            "large": {
+              "target": 20,
+              "achieved": 20,
+              "p50ms": 57.837095999999995,
+              "p99ms": 166.25893,
+              "failed": 0,
+              "requests": 500
+            },
+            "batch": {
+              "target": 6,
+              "achieved": 6,
+              "p50ms": 74.750786,
+              "p99ms": 167.789126,
+              "failed": 0,
+              "requests": 150
+            }
+          }
+        },
+        {
+          "k": 4,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.2975693789008982,
+          "rssMb": 59.078125,
+          "classes": {
+            "small": {
+              "target": 1200,
+              "achieved": 1199.92,
+              "p50ms": 51.578981000000006,
+              "p99ms": 271.222753,
+              "failed": 0,
+              "requests": 29998
+            },
+            "large": {
+              "target": 40,
+              "achieved": 40,
+              "p50ms": 57.005603,
+              "p99ms": 275.601382,
+              "failed": 0,
+              "requests": 1000
+            },
+            "batch": {
+              "target": 12,
+              "achieved": 12,
+              "p50ms": 74.082334,
+              "p99ms": 310.180633,
+              "failed": 0,
+              "requests": 300
+            }
+          }
+        },
+        {
+          "k": 8,
+          "pass": false,
+          "reason": "small p99 573 ms, large p99 584 ms, batch p99 608 ms",
+          "cpuUtilization": 0.6660014063628416,
+          "rssMb": 70.78515625,
+          "classes": {
+            "small": {
+              "target": 2400,
+              "achieved": 2399.92,
+              "p50ms": 69.648287,
+              "p99ms": 573.4745780000001,
+              "failed": 0,
+              "requests": 59998
+            },
+            "large": {
+              "target": 80,
+              "achieved": 80,
+              "p50ms": 73.554505,
+              "p99ms": 583.7056590000001,
+              "failed": 0,
+              "requests": 2000
+            },
+            "batch": {
+              "target": 24,
+              "achieved": 24,
+              "p50ms": 92.00130700000001,
+              "p99ms": 607.859871,
+              "failed": 0,
+              "requests": 600
+            }
+          }
+        },
+        {
+          "k": 6,
+          "pass": false,
+          "reason": "small p99 629 ms, large p99 696 ms, batch p99 723 ms",
+          "cpuUtilization": 0.5102431435814704,
+          "rssMb": 58.5546875,
+          "classes": {
+            "small": {
+              "target": 1800,
+              "achieved": 1799.88,
+              "p50ms": 56.949177,
+              "p99ms": 629.1495630000001,
+              "failed": 0,
+              "requests": 44997
+            },
+            "large": {
+              "target": 60,
+              "achieved": 60,
+              "p50ms": 61.474523000000005,
+              "p99ms": 695.519291,
+              "failed": 0,
+              "requests": 1500
+            },
+            "batch": {
+              "target": 18,
+              "achieved": 18,
+              "p50ms": 77.34043,
+              "p99ms": 722.594405,
+              "failed": 0,
+              "requests": 450
+            }
+          }
+        },
+        {
+          "k": 5,
+          "pass": false,
+          "reason": "small p99 1077 ms, large p99 1078 ms, batch p99 1101 ms",
+          "cpuUtilization": 0.42369221575355664,
+          "rssMb": 45.24609375,
+          "classes": {
+            "small": {
+              "target": 1500,
+              "achieved": 1499.96,
+              "p50ms": 54.819874999999996,
+              "p99ms": 1076.921343,
+              "failed": 0,
+              "requests": 37499
+            },
+            "large": {
+              "target": 50,
+              "achieved": 50,
+              "p50ms": 59.201929,
+              "p99ms": 1077.5320470000001,
+              "failed": 0,
+              "requests": 1250
+            },
+            "batch": {
+              "target": 15,
+              "achieved": 15,
+              "p50ms": 76.71034999999999,
+              "p99ms": 1100.948803,
+              "failed": 0,
+              "requests": 375
+            }
+          }
+        },
+        {
+          "k": 4.5,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.38567452488860116,
+          "rssMb": 60.1875,
+          "classes": {
+            "small": {
+              "target": 1350,
+              "achieved": 1350,
+              "p50ms": 54.060672,
+              "p99ms": 376.323634,
+              "failed": 0,
+              "requests": 33750
+            },
+            "large": {
+              "target": 45,
+              "achieved": 45,
+              "p50ms": 58.069852999999995,
+              "p99ms": 461.99992299999997,
+              "failed": 0,
+              "requests": 1125
+            },
+            "batch": {
+              "target": 14,
+              "achieved": 14,
+              "p50ms": 75.846565,
+              "p99ms": 446.429489,
+              "failed": 0,
+              "requests": 350
+            }
+          }
+        }
+      ]
+    },
+    {
+      "lang": "ts",
+      "k": 2.75,
+      "steps": [
+        {
+          "k": 1,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.39706713434707636,
+          "rssMb": 188.56640625,
+          "classes": {
+            "small": {
+              "target": 300,
+              "achieved": 300,
+              "p50ms": 52.956970999999996,
+              "p99ms": 118.12044200000001,
+              "failed": 0,
+              "requests": 7500
+            },
+            "large": {
+              "target": 10,
+              "achieved": 10,
+              "p50ms": 60.474087000000004,
+              "p99ms": 147.65249,
+              "failed": 0,
+              "requests": 250
+            },
+            "batch": {
+              "target": 3,
+              "achieved": 3,
+              "p50ms": 83.54522,
+              "p99ms": 161.02006599999999,
+              "failed": 0,
+              "requests": 75
+            }
+          }
+        },
+        {
+          "k": 2,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.4687309877792481,
+          "rssMb": 206.95703125,
+          "classes": {
+            "small": {
+              "target": 600,
+              "achieved": 600,
+              "p50ms": 51.910525,
+              "p99ms": 111.961675,
+              "failed": 0,
+              "requests": 15000
+            },
+            "large": {
+              "target": 20,
+              "achieved": 20,
+              "p50ms": 56.521363,
+              "p99ms": 106.984035,
+              "failed": 0,
+              "requests": 500
+            },
+            "batch": {
+              "target": 6,
+              "achieved": 6,
+              "p50ms": 78.988553,
+              "p99ms": 159.150558,
+              "failed": 0,
+              "requests": 150
+            }
+          }
+        },
+        {
+          "k": 4,
+          "pass": false,
+          "reason": "small p99 657 ms, large p99 858 ms, batch p99 822 ms",
+          "cpuUtilization": 0.9057428439874146,
+          "rssMb": 291.84765625,
+          "classes": {
+            "small": {
+              "target": 1200,
+              "achieved": 1199.96,
+              "p50ms": 60.990687,
+              "p99ms": 656.6310060000001,
+              "failed": 0,
+              "requests": 29999
+            },
+            "large": {
+              "target": 40,
+              "achieved": 40,
+              "p50ms": 67.31657100000001,
+              "p99ms": 858.115514,
+              "failed": 0,
+              "requests": 1000
+            },
+            "batch": {
+              "target": 12,
+              "achieved": 12,
+              "p50ms": 83.04874,
+              "p99ms": 821.823116,
+              "failed": 0,
+              "requests": 300
+            }
+          }
+        },
+        {
+          "k": 3,
+          "pass": false,
+          "reason": "large p99 544 ms, batch p99 554 ms",
+          "cpuUtilization": 0.7778502968617473,
+          "rssMb": 276.1875,
+          "classes": {
+            "small": {
+              "target": 900,
+              "achieved": 900,
+              "p50ms": 59.325154,
+              "p99ms": 491.68514400000004,
+              "failed": 0,
+              "requests": 22500
+            },
+            "large": {
+              "target": 30,
+              "achieved": 30,
+              "p50ms": 65.79649599999999,
+              "p99ms": 544.120375,
+              "failed": 0,
+              "requests": 750
+            },
+            "batch": {
+              "target": 9,
+              "achieved": 9,
+              "p50ms": 82.706784,
+              "p99ms": 554.259073,
+              "failed": 0,
+              "requests": 225
+            }
+          }
+        },
+        {
+          "k": 2.5,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.5865026607108176,
+          "rssMb": 266.171875,
+          "classes": {
+            "small": {
+              "target": 750,
+              "achieved": 749.92,
+              "p50ms": 52.440689,
+              "p99ms": 269.352785,
+              "failed": 0,
+              "requests": 18748
+            },
+            "large": {
+              "target": 25,
+              "achieved": 25,
+              "p50ms": 58.882865,
+              "p99ms": 279.85360599999996,
+              "failed": 0,
+              "requests": 625
+            },
+            "batch": {
+              "target": 8,
+              "achieved": 8,
+              "p50ms": 79.239802,
+              "p99ms": 299.033883,
+              "failed": 0,
+              "requests": 200
+            }
+          }
+        },
+        {
+          "k": 2.75,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.6525727050557507,
+          "rssMb": 267.69140625,
+          "classes": {
+            "small": {
+              "target": 825,
+              "achieved": 825,
+              "p50ms": 52.637113,
+              "p99ms": 111.485845,
+              "failed": 0,
+              "requests": 20625
+            },
+            "large": {
+              "target": 28,
+              "achieved": 28,
+              "p50ms": 59.550568999999996,
+              "p99ms": 130.993328,
+              "failed": 0,
+              "requests": 700
+            },
+            "batch": {
+              "target": 8,
+              "achieved": 8,
+              "p50ms": 79.000691,
+              "p99ms": 186.668584,
+              "failed": 0,
+              "requests": 200
+            }
+          }
+        }
+      ]
+    },
+    {
+      "lang": "go",
+      "k": 5.5,
+      "steps": [
+        {
+          "k": 1,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.18987443788370548,
+          "rssMb": 53.375,
+          "classes": {
+            "small": {
+              "target": 300,
+              "achieved": 300,
+              "p50ms": 51.886035,
+              "p99ms": 77.473326,
+              "failed": 0,
+              "requests": 7500
+            },
+            "large": {
+              "target": 10,
+              "achieved": 10,
+              "p50ms": 61.586722,
+              "p99ms": 85.202066,
+              "failed": 0,
+              "requests": 250
+            },
+            "batch": {
+              "target": 3,
+              "achieved": 3,
+              "p50ms": 78.00582200000001,
+              "p99ms": 96.17374500000001,
+              "failed": 0,
+              "requests": 75
+            }
+          }
+        },
+        {
+          "k": 2,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.21782618632577957,
+          "rssMb": 94.07421875,
+          "classes": {
+            "small": {
+              "target": 600,
+              "achieved": 600,
+              "p50ms": 50.715918,
+              "p99ms": 94.945419,
+              "failed": 0,
+              "requests": 15000
+            },
+            "large": {
+              "target": 20,
+              "achieved": 20,
+              "p50ms": 57.241875,
+              "p99ms": 108.62849700000001,
+              "failed": 0,
+              "requests": 500
+            },
+            "batch": {
+              "target": 6,
+              "achieved": 6,
+              "p50ms": 74.203264,
+              "p99ms": 139.713002,
+              "failed": 0,
+              "requests": 150
+            }
+          }
+        },
+        {
+          "k": 4,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.4210499563119705,
+          "rssMb": 131.47265625,
+          "classes": {
+            "small": {
+              "target": 1200,
+              "achieved": 1199.96,
+              "p50ms": 53.396567,
+              "p99ms": 313.49394600000005,
+              "failed": 0,
+              "requests": 29999
+            },
+            "large": {
+              "target": 40,
+              "achieved": 40,
+              "p50ms": 59.660526,
+              "p99ms": 314.707021,
+              "failed": 0,
+              "requests": 1000
+            },
+            "batch": {
+              "target": 12,
+              "achieved": 12,
+              "p50ms": 74.9653,
+              "p99ms": 346.297231,
+              "failed": 0,
+              "requests": 300
+            }
+          }
+        },
+        {
+          "k": 8,
+          "pass": false,
+          "reason": "small p99 4417 ms, small 2015.1/2400 req/s, large p99 1036 ms, batch p99 1059 ms",
+          "cpuUtilization": 0.8038570283882784,
+          "rssMb": 192.125,
+          "classes": {
+            "small": {
+              "target": 2400,
+              "achieved": 2015.08,
+              "p50ms": 2890.579956,
+              "p99ms": 4416.625807,
+              "failed": 0,
+              "requests": 50377
+            },
+            "large": {
+              "target": 80,
+              "achieved": 80,
+              "p50ms": 472.88869300000005,
+              "p99ms": 1035.8620970000002,
+              "failed": 0,
+              "requests": 2000
+            },
+            "batch": {
+              "target": 24,
+              "achieved": 24,
+              "p50ms": 495.186774,
+              "p99ms": 1059.329452,
+              "failed": 0,
+              "requests": 600
+            }
+          }
+        },
+        {
+          "k": 6,
+          "pass": false,
+          "reason": "small p99 649 ms, large p99 661 ms, batch p99 694 ms",
+          "cpuUtilization": 0.7083548075062875,
+          "rssMb": 186.06640625,
+          "classes": {
+            "small": {
+              "target": 1800,
+              "achieved": 1799.84,
+              "p50ms": 70.209774,
+              "p99ms": 649.1438019999999,
+              "failed": 0,
+              "requests": 44996
+            },
+            "large": {
+              "target": 60,
+              "achieved": 60,
+              "p50ms": 75.408751,
+              "p99ms": 660.6661270000001,
+              "failed": 0,
+              "requests": 1500
+            },
+            "batch": {
+              "target": 18,
+              "achieved": 18,
+              "p50ms": 89.677479,
+              "p99ms": 693.608773,
+              "failed": 0,
+              "requests": 450
+            }
+          }
+        },
+        {
+          "k": 5,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.5319653082866233,
+          "rssMb": 133.80859375,
+          "classes": {
+            "small": {
+              "target": 1500,
+              "achieved": 1499.96,
+              "p50ms": 55.345215,
+              "p99ms": 210.737528,
+              "failed": 0,
+              "requests": 37499
+            },
+            "large": {
+              "target": 50,
+              "achieved": 50,
+              "p50ms": 58.551199999999994,
+              "p99ms": 212.132689,
+              "failed": 0,
+              "requests": 1250
+            },
+            "batch": {
+              "target": 15,
+              "achieved": 15,
+              "p50ms": 79.89889699999999,
+              "p99ms": 246.898453,
+              "failed": 0,
+              "requests": 375
+            }
+          }
+        },
+        {
+          "k": 5.5,
+          "pass": true,
+          "reason": "ok",
+          "cpuUtilization": 0.6199456882255389,
+          "rssMb": 183.47265625,
+          "classes": {
+            "small": {
+              "target": 1650,
+              "achieved": 1649.96,
+              "p50ms": 61.992352000000004,
+              "p99ms": 409.73023400000005,
+              "failed": 0,
+              "requests": 41249
+            },
+            "large": {
+              "target": 55,
+              "achieved": 55,
+              "p50ms": 66.254041,
+              "p99ms": 410.280857,
+              "failed": 0,
+              "requests": 1375
+            },
+            "batch": {
+              "target": 17,
+              "achieved": 17,
+              "p50ms": 83.318799,
+              "p99ms": 452.02558999999997,
+              "failed": 0,
+              "requests": 425
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

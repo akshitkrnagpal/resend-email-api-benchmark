@@ -9,7 +9,12 @@
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": [
+      "node",
+      "bun"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
