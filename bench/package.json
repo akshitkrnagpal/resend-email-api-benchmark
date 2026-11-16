@@ -5,7 +5,10 @@
   "scripts": {
     "payloads": "node payloads.ts",
     "parity": "node parity.ts",
-    "bench": "node run.ts",
+    "fair": "bash fair.sh",
+    "aggregate": "node aggregate.ts",
+    "chart": "node chart.ts",
+    "profile": "bash profile.sh",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

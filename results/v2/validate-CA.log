@@ -1,6 +1,0 @@
-
-##### C in-flight S3=1000ms — 11:35:21
-config {"LABEL":"inflight-s3-1000ms","DURATION":180,"MIX":{"large":56},"BURSTS":[],"LAT":{"s3":[1000,0],"pg":[0,1],"redis":[0,0]},"CONNECTIONS":"512","REPEATS":1,"LANGS":["ts","ts-bun","go","rust"],"SEED":"20261116","cpus":1,"memory":"2g"}
-order #1: ts ts-bun go rust
-ts      rep 1: peakRSS 584 MB, cgroup 615 MB, median 437 MB, cpu 35%, throttled 370 ms, threads 11 || large: p50 1010 p99 1118 fail 0/20160
-ts-bun  rep 1: peakRSS 873 MB, cgroup 898 MB, median 507 MB, cpu 28%, throttled 289 ms, threads 7 || large: p50 1010 p99 1206 fail 0/20160

@@ -1,0 +1,7 @@
+config {"LABEL":"v3/prodlike-r1b","DURATION":180,"MIX":{"small":300,"large":10,"batch":3},"BURSTS":[{"scenario":"large","rate":60,"seconds":15,"every":60}],"LAT":{"s3":[40,20],"pg":[2,1],"redis":[1,0]},"CONNECTIONS":"512","REPEATS":1,"LANGS":["ts","ts-bun","go","rust"],"SEED":"2001","cpus":1,"memory":"2g"}
+order #1: rust go ts-bun ts
+rust    rep 1: peakRSS 110 MB, cgroup 118 MB, median 69 MB, cpu 25%, throttled 0 ms, threads 2 || small: p50 60 p99 246 fail 0/108000 | large: p50 66 p99 248 fail 0/6300 | batch: p50 86 p99 261 fail 0/1080 | burst-large: p50 66 p99 170 fail 0/2700
+go      rep 1: peakRSS 112 MB, cgroup 128 MB, median 79 MB, cpu 27%, throttled 69 ms, threads 7 || small: p50 54 p99 179 fail 0/108000 | large: p50 62 p99 185 fail 0/6300 | batch: p50 81 p99 203 fail 0/1080 | burst-large: p50 70 p99 200 fail 0/2700
+ts-bun  rep 1: peakRSS 389 MB, cgroup 404 MB, median 76 MB, cpu 28%, throttled 385 ms, threads 6 || small: p50 58 p99 471 fail 0/108000 | large: p50 64 p99 493 fail 0/6300 | batch: p50 84 p99 509 fail 0/1080 | burst-large: p50 79 p99 687 fail 0/2700
+ts      rep 1: peakRSS 928 MB, cgroup 937 MB, median 246 MB, cpu 52%, throttled 6654 ms, threads 11 || small: p50 57 p99 2074 fail 0/108000 | large: p50 63 p99 2114 fail 0/6300 | batch: p50 88 p99 2133 fail 0/1080 | burst-large: p50 65 p99 241 fail 0/2700
+wrote results/v3/prodlike-r1b/summary.json

@@ -5,7 +5,7 @@
 // payload class has p99 <= SLO_P99_MS, there are zero failed requests, and at least 97% of the target
 // rate was delivered. k doubles until a step fails, then BISECT halving steps narrow the limit.
 //
-// Usage: node capacity.ts   env: LABEL=v3/capacity LANGS=... STEP=25 SLO_P99_MS=500 BISECT=3 SEED=...
+// Usage: node capacity.ts   env: LABEL=fair/capacity LANGS=... STEP=25 SLO_P99_MS=500 BISECT=3 SEED=...
 //        MIX=small:300,large:10,batch:3  (+ S3_LATENCY / PG_LATENCY / REDIS_LATENCY ... as in lib.ts)
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -17,7 +17,7 @@ import {
 
 const here = dirname(fileURLToPath(import.meta.url));
 const env = process.env;
-const LABEL = env.LABEL ?? 'v3/capacity';
+const LABEL = env.LABEL ?? 'fair/capacity';
 const outDir = join(here, '..', 'results', LABEL);
 mkdirSync(outDir, { recursive: true });
 

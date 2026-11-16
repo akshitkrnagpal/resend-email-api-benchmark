@@ -1,18 +1,18 @@
-// Combines the fair-comparison runs in results/v3/ into medians (with min–max spread) and writes
-// results/v3/fair-summary.json plus a readable results/v3/FAIR.md.
+// Combines the fair-comparison runs in results/fair/ into medians (with min–max spread) and writes
+// results/fair/fair-summary.json plus a readable results/fair/FAIR.md.
 //   main-r1..r3.json        run.ts, one run per language each
-//   prodlike-r*/summary.json prodlike.ts, one run per language each
+//   prodlike-r1..r3/summary.json  prodlike.ts, one run per language each
 //   capacity/summary.json   capacity.ts
 //   inflight-s3-2000ms/summary.json
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const dir = join(dirname(fileURLToPath(import.meta.url)), '..', 'results', 'v3');
+const dir = join(dirname(fileURLToPath(import.meta.url)), '..', 'results', 'fair');
 const LANGS = ['ts', 'ts-bun', 'go', 'rust'];
 const NAMES: Record<string, string> = { ts: 'Node', 'ts-bun': 'Bun', go: 'Go', rust: 'Rust' };
 const MAIN_RUNS = (process.env.MAIN_RUNS ?? 'main-r1,main-r2,main-r3').split(',');
-const PROD_RUNS = (process.env.PROD_RUNS ?? 'prodlike-r1b,prodlike-r2,prodlike-r3').split(',');
+const PROD_RUNS = (process.env.PROD_RUNS ?? 'prodlike-r1,prodlike-r2,prodlike-r3').split(',');
 
 const readJson = <T>(p: string): T => JSON.parse(readFileSync(p, 'utf8')) as T;
 const median = (xs: number[]) => {
@@ -101,7 +101,7 @@ const f = (s: Stat | number | undefined, d = 1) => {
 };
 const row = (label: string, cells: string[]) => `| ${label} | ${cells.join(' | ')} |`;
 const head = `| | ${LANGS.map((l) => NAMES[l]).join(' | ')} |\n|---|${LANGS.map(() => '---:').join('|')}|`;
-const md: string[] = ['# Fair comparison (results/v3)', '', 'Medians across runs, (min–max) in brackets.', ''];
+const md: string[] = ['# Fair comparison (results/fair)', '', 'Medians across runs, (min–max) in brackets.', ''];
 md.push('## Main benchmark, same fixed load (785 small / 56 large / 18 batch req/s)', '', head);
 for (const sc of ['small', 'large', 'batch']) {
   const g = (k: string, d: number) => LANGS.map((l) => f(main[sc]?.fixed?.[l]?.[k], d));

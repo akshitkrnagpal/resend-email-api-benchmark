@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="592" viewBox="0 0 960 592" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="960" height="592" rx="12" fill="#fcfcfb"/>
+<text x="24" y="34" font-size="18" font-weight="600" fill="#0b0b0b">Email API: Node vs Bun vs Go vs Rust, each in its best version</text>
+<rect x="24" y="50" width="10" height="10" rx="2" fill="#2a78d6"/><text x="39" y="59" font-size="12" fill="#52514e">Node</text>
+<rect x="89" y="50" width="10" height="10" rx="2" fill="#eb6834"/><text x="104" y="59" font-size="12" fill="#52514e">Bun</text>
+<rect x="147" y="50" width="10" height="10" rx="2" fill="#1baf7a"/><text x="162" y="59" font-size="12" fill="#52514e">Go</text>
+<rect x="198" y="50" width="10" height="10" rx="2" fill="#eda100"/><text x="213" y="59" font-size="12" fill="#52514e">Rust</text>
+<text x="936" y="59" font-size="11" fill="#7a7974" text-anchor="end">median of 3 runs (line: min–max) · 1 CPU / 2 GB per server</text>
+<text x="24" y="92" font-size="14" font-weight="600" fill="#0b0b0b">CPU time per request<tspan font-size="12" font-weight="400" fill="#7a7974">  ms · lower is better · same fixed load for all four</tspan></text>
+<rect x="24" y="102" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="119" font-size="11" fill="#52514e">Small email (2 KB) · 785 req/s</text>
+<text x="34" y="139" font-size="11" fill="#52514e">Node</text>
+<path d="M84 128h82.12765293098079a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-82.12765293098079z" fill="#2a78d6"/>
+<line x1="168.16555662397974" x2="249.26666666666665" y1="135" y2="135" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="254.26666666666665" y="139" font-size="11" fill="#0b0b0b">0.44</text>
+<text x="34" y="161" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 150h29.05012508529928a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-29.05012508529928z" fill="#eb6834"/>
+<line x1="107.30338529336856" x2="127.46322964837694" y1="157" y2="157" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="132.46322964837694" y="161" font-size="11" fill="#0b0b0b">0.17</text>
+<text x="34" y="183" font-size="11" fill="#52514e">Go</text>
+<path d="M84 172h37.15144446989792a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-37.15144446989792z" fill="#1baf7a"/>
+<line x1="122.89733895976471" x2="133.85642698881077" y1="179" y2="179" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="138.85642698881077" y="183" font-size="11" fill="#0b0b0b">0.21</text>
+<text x="34" y="205" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 194h21.883183268901686a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-21.883183268901686z" fill="#eda100"/>
+<line x1="106.56848571685993" x2="120.73113249487486" y1="201" y2="201" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="125.73113249487486" y="205" font-size="11" fill="#0b0b0b">0.13</text>
+<rect x="333.3333333333333" y="102" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="119" font-size="11" fill="#52514e">Large email (730 KB) · 56 req/s</text>
+<text x="343.3333333333333" y="139" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 128h140.3970567962991a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-140.3970567962991z" fill="#2a78d6"/>
+<line x1="534.1374043226308" x2="558.5999999999999" y1="135" y2="135" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="563.5999999999999" y="139" font-size="11" fill="#0b0b0b">6.4</text>
+<text x="343.3333333333333" y="161" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 150h83.84013595272626a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-83.84013595272626z" fill="#eb6834"/>
+<line x1="480.24910609806227" x2="482.17132609835653" y1="157" y2="157" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="487.17132609835653" y="161" font-size="11" fill="#0b0b0b">3.9</text>
+<text x="343.3333333333333" y="183" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 172h94.16031743438207a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-94.16031743438207z" fill="#1baf7a"/>
+<line x1="485.21108446694336" x2="492.5020872764087" y1="179" y2="179" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="497.5020872764087" y="183" font-size="11" fill="#0b0b0b">4.3</text>
+<text x="343.3333333333333" y="205" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 194h76.16913060050827a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-76.16913060050827z" fill="#eda100"/>
+<line x1="470.8808957740475" x2="475.32761270072444" y1="201" y2="201" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="480.32761270072444" y="205" font-size="11" fill="#0b0b0b">3.6</text>
+<rect x="642.6666666666666" y="102" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="119" font-size="11" fill="#52514e">Batch of 50 · 18 req/s</text>
+<text x="652.6666666666666" y="139" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 128h153.18243732699204a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-153.18243732699204z" fill="#2a78d6"/>
+<line x1="859.8105415524808" x2="867.9333333333333" y1="135" y2="135" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="872.9333333333333" y="139" font-size="11" fill="#0b0b0b">21.1</text>
+<text x="652.6666666666666" y="161" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 150h66.93085499577944a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-66.93085499577944z" fill="#eb6834"/>
+<line x1="770.529207058785" x2="773.599552355211" y1="157" y2="157" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="778.599552355211" y="161" font-size="11" fill="#0b0b0b">9.5</text>
+<text x="652.6666666666666" y="183" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 172h96.50037326440369a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-96.50037326440369z" fill="#1baf7a"/>
+<line x1="803.0024916530513" x2="804.3314764608879" y1="179" y2="179" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="809.3314764608879" y="183" font-size="11" fill="#0b0b0b">13.5</text>
+<text x="652.6666666666666" y="205" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 194h72.76377130662435a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-72.76377130662435z" fill="#eda100"/>
+<line x1="778.8833734867047" x2="780.3995757346499" y1="201" y2="201" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="785.3995757346499" y="205" font-size="11" fill="#0b0b0b">10.3</text>
+<text x="24" y="262" font-size="14" font-weight="600" fill="#0b0b0b">Memory per task<tspan font-size="12" font-weight="400" fill="#7a7974">  MB · lower is better</tspan></text>
+<rect x="24" y="272" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="289" font-size="11" fill="#52514e">Production-like, typical</text>
+<text x="34" y="309" font-size="11" fill="#52514e">Node</text>
+<path d="M84 298h157.20818149055023a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-157.20818149055023z" fill="#2a78d6"/>
+<line x1="227.49090321281307" x2="249.26666666666665" y1="305" y2="305" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="254.26666666666665" y="309" font-size="11" fill="#0b0b0b">240</text>
+<text x="34" y="331" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 320h46.00516212463298a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-46.00516212463298z" fill="#eb6834"/>
+<line x1="133.8185953085085" x2="135.04310427067765" y1="327" y2="327" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="140.04310427067765" y="331" font-size="11" fill="#0b0b0b">74</text>
+<text x="34" y="353" font-size="11" fill="#52514e">Go</text>
+<path d="M84 342h49.47766983602039a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-49.47766983602039z" fill="#1baf7a"/>
+<line x1="134.34413563561972" x2="150.87632047572106" y1="349" y2="349" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="155.87632047572106" y="353" font-size="11" fill="#0b0b0b">79</text>
+<text x="34" y="375" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 364h42.32900753648996a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-42.32900753648996z" fill="#eda100"/>
+<line x1="130.3027305201344" x2="130.61805471640113" y1="371" y2="371" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="135.61805471640113" y="375" font-size="11" fill="#0b0b0b">69</text>
+<rect x="333.3333333333333" y="272" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="289" font-size="11" fill="#52514e">Production-like, peak (container)</text>
+<text x="343.3333333333333" y="309" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 298h118.76591223675206a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-118.76591223675206z" fill="#2a78d6"/>
+<line x1="429.28149577162105" x2="558.5999999999999" y1="305" y2="305" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="563.5999999999999" y="309" font-size="11" fill="#0b0b0b">937</text>
+<text x="343.3333333333333" y="331" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 320h39.91219216131939a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-39.91219216131939z" fill="#eb6834"/>
+<line x1="418.1583633959565" x2="446.2115838899434" y1="327" y2="327" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="451.2115838899434" y="331" font-size="11" fill="#0b0b0b">335</text>
+<text x="343.3333333333333" y="353" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 342h12.824665285592339a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-12.824665285592339z" fill="#1baf7a"/>
+<line x1="407.84125510548495" x2="417.3508040267916" y1="349" y2="349" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="422.3508040267916" y="353" font-size="11" fill="#0b0b0b">128</text>
+<text x="343.3333333333333" y="375" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 364h10.671173634485983a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10.671173634485983z" fill="#eda100"/>
+<line x1="406.5040227660503" x2="408.80080758785766" y1="371" y2="371" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="413.80080758785766" y="375" font-size="11" fill="#0b0b0b">112</text>
+<rect x="642.6666666666666" y="272" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="289" font-size="11" fill="#52514e">~112 large emails in flight, typical</text>
+<text x="652.6666666666666" y="309" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 298h161.26666666666665a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-161.26666666666665z" fill="#2a78d6"/>
+<text x="872.9333333333333" y="309" font-size="11" fill="#0b0b0b">671</text>
+<text x="652.6666666666666" y="331" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 320h159.95630160458106a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-159.95630160458106z" fill="#eb6834"/>
+<text x="871.6229682712477" y="331" font-size="11" fill="#0b0b0b">666</text>
+<text x="652.6666666666666" y="353" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 342h57.843073561572325a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-57.843073561572325z" fill="#1baf7a"/>
+<text x="769.5097402282389" y="353" font-size="11" fill="#0b0b0b">251</text>
+<text x="652.6666666666666" y="375" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 364h45.96320000310476a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-45.96320000310476z" fill="#eda100"/>
+<text x="757.6298666697714" y="375" font-size="11" fill="#0b0b0b">203</text>
+<text x="24" y="432" font-size="14" font-weight="600" fill="#0b0b0b">Latency, production-like<tspan font-size="12" font-weight="400" fill="#7a7974">  ms · lower is better · S3 ~40 ms, Postgres 2 ms, Redis 1 ms</tspan></text>
+<rect x="24" y="442" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="34" y="459" font-size="11" fill="#52514e">Small email, median</text>
+<text x="34" y="479" font-size="11" fill="#52514e">Node</text>
+<path d="M84 468h111.01574116748012a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-111.01574116748012z" fill="#2a78d6"/>
+<line x1="196.18851571707356" x2="249.26666666666665" y1="475" y2="475" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="254.26666666666665" y="479" font-size="11" fill="#0b0b0b">57.4</text>
+<text x="34" y="501" font-size="11" fill="#52514e">Bun</text>
+<path d="M84 490h105.56178178716297a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-105.56178178716297z" fill="#eb6834"/>
+<line x1="188.01176733183104" x2="200.35803909211194" y1="497" y2="497" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="205.35803909211194" y="501" font-size="11" fill="#0b0b0b">54.7</text>
+<text x="34" y="523" font-size="11" fill="#52514e">Go</text>
+<path d="M84 512h105.08862516577064a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-105.08862516577064z" fill="#1baf7a"/>
+<line x1="191.12981351083715" x2="203.9343069396851" y1="519" y2="519" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="208.9343069396851" y="523" font-size="11" fill="#0b0b0b">54.4</text>
+<text x="34" y="545" font-size="11" fill="#52514e">Rust</text>
+<path d="M84 534h111.12840466359837a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-111.12840466359837z" fill="#eda100"/>
+<line x1="197.01440538089784" x2="203.47722763868518" y1="541" y2="541" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="208.47722763868518" y="545" font-size="11" fill="#0b0b0b">57.4</text>
+<rect x="333.3333333333333" y="442" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="343.3333333333333" y="459" font-size="11" fill="#52514e">Small email, p99</text>
+<text x="343.3333333333333" y="479" font-size="11" fill="#52514e">Node</text>
+<path d="M393.3333333333333 468h70.96806986408241a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-70.96806986408241z" fill="#2a78d6"/>
+<line x1="399.5371701724299" x2="558.5999999999999" y1="475" y2="475" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="563.5999999999999" y="479" font-size="11" fill="#0b0b0b">2074</text>
+<text x="343.3333333333333" y="501" font-size="11" fill="#52514e">Bun</text>
+<path d="M393.3333333333333 490h11.984017696903665a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-11.984017696903665z" fill="#eb6834"/>
+<line x1="397.669930646156" x2="410.3585060037375" y1="497" y2="497" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="415.3585060037375" y="501" font-size="11" fill="#0b0b0b">442</text>
+<text x="343.3333333333333" y="523" font-size="11" fill="#52514e">Go</text>
+<path d="M393.3333333333333 512h2.7010727802244965a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-2.7010727802244965z" fill="#1baf7a"/>
+<line x1="399.81111396600204" x2="417.7352481445787" y1="519" y2="519" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="422.7352481445787" y="523" font-size="11" fill="#0b0b0b">185</text>
+<text x="343.3333333333333" y="545" font-size="11" fill="#52514e">Rust</text>
+<path d="M393.3333333333333 534h2.541391457153101a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-2.541391457153101z" fill="#eda100"/>
+<line x1="397.76647063854244" x2="402.2086352969235" y1="541" y2="541" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="407.2086352969235" y="545" font-size="11" fill="#0b0b0b">181</text>
+<rect x="642.6666666666666" y="442" width="293.3333333333333" height="122" rx="8" fill="#ffffff" stroke="#e6e5e0"/>
+<text x="652.6666666666666" y="459" font-size="11" fill="#52514e">Large email, median</text>
+<text x="652.6666666666666" y="479" font-size="11" fill="#52514e">Node</text>
+<path d="M702.6666666666666 468h108.69193598211622a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-108.69193598211622z" fill="#2a78d6"/>
+<line x1="815.24518066656" x2="867.9333333333333" y1="475" y2="475" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="872.9333333333333" y="479" font-size="11" fill="#0b0b0b">62.7</text>
+<text x="652.6666666666666" y="501" font-size="11" fill="#52514e">Bun</text>
+<path d="M702.6666666666666 490h106.67233928678377a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-106.67233928678377z" fill="#eb6834"/>
+<line x1="809.2279845742337" x2="817.7764358069272" y1="497" y2="497" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="822.7764358069272" y="501" font-size="11" fill="#0b0b0b">61.6</text>
+<text x="652.6666666666666" y="523" font-size="11" fill="#52514e">Go</text>
+<path d="M702.6666666666666 512h106.62236284386302a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-106.62236284386302z" fill="#1baf7a"/>
+<line x1="811.2874383593386" x2="823.0660471714215" y1="519" y2="519" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="828.0660471714215" y="523" font-size="11" fill="#0b0b0b">61.5</text>
+<text x="652.6666666666666" y="545" font-size="11" fill="#52514e">Rust</text>
+<path d="M702.6666666666666 534h110.5860602501654a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-110.5860602501654z" fill="#eda100"/>
+<line x1="816.3106525378951" x2="821.4399940619079" y1="541" y2="541" stroke="#0b0b0b" stroke-opacity="0.45" stroke-width="1.5"/>
+<text x="826.4399940619079" y="545" font-size="11" fill="#0b0b0b">63.7</text>
+</svg>
